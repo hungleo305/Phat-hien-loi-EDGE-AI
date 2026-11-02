@@ -3,7 +3,7 @@
 **Đồ án tốt nghiệp Kỹ sư - Học viện Kỹ thuật Mật mã (KMA)**  
 **Chuyên ngành:** An toàn thông tin / Hệ thống nhúng & Edge AI  
 **Sinh viên thực hiện:** Chu Mạnh Hùng  
-**Mục tiêu:** Tự động phát hiện và phân loại lỗi vỏ hộp bao bì carton trên băng tải công nghiệp Stop & Go thời gian thực bằng camera công nghiệp USB UVC, vi máy tính Raspberry Pi 4 Model B, vi điều khiển ESP32 và giao diện giám sát SCADA Web Dashboard.
+**Mục tiêu:** Tự động phát hiện và phân loại lỗi vỏ hộp bao bì carton trên băng tải công nghiệp Stop & Go thời gian thực bằng camera USB UVC, vi máy tính Raspberry Pi 4 Model B, vi điều khiển ESP32 và giao diện giám sát SCADA Web Dashboard.
 
 ---
 
