@@ -1,0 +1,9 @@
+path: F:/DATN/Cong_cu_phat_trien/work/newlabel_v4_20261028/dataset_detection_balanced
+train: train/images
+val: valid/images
+test: test/images
+names:
+- DEFECT
+- PASS
+- visible_defect
+nc: 3

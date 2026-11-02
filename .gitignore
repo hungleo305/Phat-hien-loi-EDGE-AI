@@ -1,0 +1,29 @@
+# Build artifacts & temporary files
+**/build/bootloader/
+**/build/config/
+**/build/esp-idf/
+**/build/log/
+**/build/main/
+**/build/CMake*
+**/build/*.ninja*
+**/build/*.cmake
+**/build/*.map
+**/build/*.ld
+**/build/*.txt
+04_ESP32_Firmware/main/build/
+04_ESP32_Firmware/main/.cache/
+04_ESP32_Firmware/main/compile_commands.json
+
+# Python cache & logs
+__pycache__/
+*.py[cod]
+*$py.class
+*.log
+.pytest_cache/
+yolo_config/
+mplcache/
+
+# OS specific
+.DS_Store
+Thumbs.db
+Desktop.ini
