@@ -15,16 +15,21 @@ KIẾN TRÚC ĐƯỜNG ỐNG SUY LUẬN 3 TẦNG (3-TIER HIERARCHICAL INSPECTION
           │
           ▼
 ┌────────────────────────────────────────────────────────────────────────┐
-│ TẦNG 1: PHÁT HIỆN HỘP TỔNG THỂ (YOLOv8n NCNN @ 640x640)                │
+│ TẦNG 1 (Tier 1): PHÁT HIỆN HỘP TỔNG THỂ (YOLOv8n NCNN @ 640x640)       │
 │ - Xác định vị trí vỏ hộp bìa carton (Bounding Box [x1, y1, x2, y2]).   │
 │ - Nhận diện lỗi biến dạng cấu trúc nghiêm trọng (móp méo, rách lớn).   │
 │ ==> THOÁT SỚM 1 (Early-Exit 1): Nếu phát hiện DEFECT cấu trúc nặng,   │
-│     ra quyết định DEFECT ngay (~140ms), bỏ qua Tầng 2 & Tầng 3.        │
+│     ra quyết định DEFECT ngay (~140ms), ngắt sớm toàn bộ quy trình.    │
 └──────────────────────────────────┬─────────────────────────────────────┘
                                    │ (Hộp nguyên vẹn / Nghi ngờ)
                                    ▼
 ┌────────────────────────────────────────────────────────────────────────┐
-│ TẦNG 2: KIỂM ĐỊNH TEM NHÃN & TOÀN VẸN CHI TIẾT IN (ORB + HOMOGRAPHY)   │
+│ TẦNG 3 (Tier 3): KIỂM ĐỊNH TEM NHÃN & TOÀN VẸN CHI TIẾT IN (ORB + NCC)  │
+│ * Lưu ý: Tầng 3 được thực thi TRƯỚC Tầng 2 trong luồng chạy vì 2 lý do:│
+│   1. Thoát sớm (Early-Exit): Bắt lỗi thiếu tem/sai QC/sai năm ngay mà  │
+│      không cần tiêu tốn tài nguyên chạy mô hình bề mặt 960x960 nặng.   │
+│   2. Tạo mặt nạ Logo Guard: Cung cấp tọa độ chính xác của logo KMA để   │
+│      Tầng 2 không nhận diện nhầm nét vẽ logo thành vết nứt carton.     │
 │ - Crop vùng chứa tem nhãn từ Bounding Box Tầng 1 (giảm 75% diện tích). │
 │ - So khớp đặc trưng ORB + Ma trận Homography biến đổi hình học 2D.     │
 │ - Kiểm tra chi tiết quan trọng: Năm kiểm định ('2026' vs '2025'),       │
@@ -37,11 +42,11 @@ KIẾN TRÚC ĐƯỜNG ỐNG SUY LUẬN 3 TẦNG (3-TIER HIERARCHICAL INSPECTION
                                    │ (Tem hợp lệ, đạt chuẩn PASS)
                                    ▼
 ┌────────────────────────────────────────────────────────────────────────┐
-│ TẦNG 3: PHÁT HIỆN LỖI BỀ MẶT VI MÔ (YOLOv8n Fine-tuned @ 960x960)      │
-│ - Chỉ kích hoạt khi tem đã HỢP LỆ nhằm tiết kiệm tài nguyên Pi 4.      │
+│ TẦNG 2 (Tier 2): PHÁT HIỆN LỖI BỀ MẶT VI MÔ (YOLOv8n NCNN @ 960x960)   │
+│ - Chỉ kích hoạt có điều kiện khi tem đã HỢP LỆ nhằm tiết kiệm CPU Pi 4.│
 │ - Quét bề mặt carton tìm lỗ thủng nhỏ, vết xước, rách mép cạnh hộp.    │
-│ - Logo Suppression Guard: Tự động loại trừ các nét đồ họa của logo     │
-│   Học viện KMA để chống nhận diện nhầm thành vết rách carton.          │
+│ - Logo Suppression Guard: Sử dụng đa giác logo từ Tầng 3 để loại trừ   │
+│   báo động giả do nét đồ họa của logo trường.                          │
 │ ==> QUYẾT ĐỊNH CUỐI: PASS (Đạt chuẩn) hoặc DEFECT (Lỗi bề mặt carton). │
 └────────────────────────────────────────────────────────────────────────┘
 """
@@ -186,7 +191,10 @@ class CurrentInspection(BaseInspection):
             return apply_guard(image, res)
 
         # ---------------------------------------------------------------------
-        # TẦNG 2: Kiểm định tem nhãn và chi tiết in ấn (ORB + Homography)
+        # BƯỚC 2 (Thực thi Tầng 3 - LabelVerifier): Kiểm định tem nhãn (ORB + Homography)
+        # Thực thi trước Tầng 2 để:
+        #   1. Kích hoạt Early-Exit nếu thiếu tem / sai QC / sai năm mà không tốn tài nguyên chạy mô hình bề mặt 960x960.
+        #   2. Cung cấp đa giác Logo chuẩn xác làm mặt nạ bảo vệ cho Tầng 2 (Mô hình bề mặt).
         # Cắt vùng quan tâm (ROI Crop) xung quanh hộp để giảm không gian tìm kiếm.
         # ---------------------------------------------------------------------
         t_v0 = time.perf_counter()
@@ -398,9 +406,10 @@ class CurrentInspection(BaseInspection):
             return guarded
 
         # ---------------------------------------------------------------------
-        # TẦNG 3: Mô hình bề mặt có điều kiện (NCNN 960x960) với Logo Guard
-        # Chỉ chạy khi tem nhãn đã được XÁC NHẬN HỢP LỆ (Status = verified).
+        # BƯỚC 3 (Thực thi Tầng 2 - Surface Model): Mô hình bề mặt vi mô (NCNN 960x960)
+        # Chỉ chạy có điều kiện khi tem nhãn Tầng 3 đã XÁC NHẬN HỢP LỆ (Status = verified).
         # Mục tiêu: Quét các vết rách/thủng nhỏ trên bề mặt carton ngoài vùng tem.
+        # Sử dụng mặt nạ đa giác Logo từ Tầng 3 để triệt tiêu báo động giả do nét vẽ logo.
         # ---------------------------------------------------------------------
         t_s0 = time.perf_counter()
         surf_res = self._predict(self.surface_model, image, self.surface_imgsz)
