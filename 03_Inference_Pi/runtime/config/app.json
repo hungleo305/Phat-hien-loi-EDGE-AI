@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "release": "model_runtime_closed_20261030",
+  "whole_backend": "ncnn",
+  "whole_imgsz": 640,
+  "surface_imgsz": 960,
+  "whole_threshold": 0.7,
+  "surface_threshold": 0.05,
+  "surface_max_area_ratio": 0.2,
+  "opencv_threads": 1,
+  "torch_threads": 3,
+  "review_protocol_result": "ERROR"
+}

@@ -11,6 +11,8 @@
 /* 0 deg parks the paddle parallel to the belt. 35 deg diagonal reject position. */
 #define SERVO_DEFAULT_REJECT_DEG 35
 #define SERVO_MAX_TEST_DEG 90
+/* 1 when servo mechanical mounting orientation is reversed: duty decreases from neutral (1.5ms) */
+#define SERVO_REVERSE_DIRECTION 1
 /* Commanded angular speed ceiling. Default 230 dps gives 50 ms per step (150 ms total travel). */
 #define SERVO_DEFAULT_SPEED_DPS 230
 #define SERVO_MIN_SPEED_DPS 30

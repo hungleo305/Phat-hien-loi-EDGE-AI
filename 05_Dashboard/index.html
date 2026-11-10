@@ -228,23 +228,13 @@
                 <h2>Kết quả gần đây</h2>
               </div>
               <div class="run-tools">
-                <div class="run-create-group">
-                  <label for="runName">Phiên mới</label>
-                  <input id="runName" type="text" maxlength="80" autocomplete="off"
-                    placeholder="VD: Kiểm thử ánh sáng 01" aria-label="Tên phiên vận hành mới">
-                  <button id="createRun" class="button subtle run-button" type="button">Tạo phiên</button>
-                </div>
-                <div class="run-view-group">
-                  <label for="runSelect">Xem phiên</label>
-                  <select id="runSelect" aria-label="Chọn phiên để xem">
-                    <option value="current">Chưa tạo phiên vận hành</option>
-                  </select>
-                  <div class="run-actions">
-                    <button id="runRefresh" class="button subtle run-button" type="button">Làm mới</button>
-                    <button id="downloadCsv" class="button subtle run-button" type="button">Tải CSV</button>
-                    <button id="downloadJson" class="button subtle run-button" type="button">Tải JSON</button>
-                  </div>
-                </div>
+                <label for="runSelect">Lượt chạy</label>
+                <select id="runSelect" aria-label="Chọn lượt chạy">
+                  <option value="current">Phiên hiện tại</option>
+                </select>
+                <button id="runRefresh" class="button subtle run-button" type="button">Làm mới</button>
+                <button id="downloadCsv" class="button subtle run-button" type="button">Tải CSV</button>
+                <button id="downloadJson" class="button subtle run-button" type="button">Tải JSON</button>
               </div>
             </div>
             <div class="table-wrap">
@@ -264,13 +254,13 @@
                 </tbody>
               </table>
             </div>
-            <div class="history-footer"><span id="runSummary">Chưa tạo phiên vận hành</span><span id="lastUpdate">…</span></div>
+            <div class="history-footer"><span id="runSummary">Phiên hiện tại · quyết định cuối cùng từ trạm Pi</span><span id="lastUpdate">…</span></div>
           </div>
         </section>
       </div>
     </main>
   </div>
-  <script src="/dashboard.js?v=20261102_named_runs_v1" defer></script>
+  <script src="/dashboard.js?v=20261030_v7" defer></script>
 </body>
 
 </html>

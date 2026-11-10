@@ -27,3 +27,14 @@ mplcache/
 .DS_Store
 Thumbs.db
 Desktop.ini
+
+# Private/local runtime state
+**/runs/
+**/captures/
+**/events.jsonl
+**/ssh/
+*.pem
+*_ed25519
+**/runtime_settings/
+
+04_ESP32_Firmware/build/ESP32_Firmware.bin

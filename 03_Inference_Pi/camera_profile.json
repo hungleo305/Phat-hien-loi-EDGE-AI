@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "camera": {
+    "driver": "uvcvideo",
+    "card": "USB Composite Device: USB Camer",
+    "bus": "usb-0000:01:00.0-1.3"
+  },
+  "device_when_saved": "/dev/video0",
+  "saved_at": "2026-10-30T15:18:49.048650+07:00",
+  "apply_on_startup": true,
+  "values": {
+    "brightness": 0,
+    "contrast": 256,
+    "saturation": 256,
+    "gamma": 20,
+    "gain": 1,
+    "power_line_frequency": 1,
+    "white_balance_temperature": 5000,
+    "sharpness": 135,
+    "backlight_compensation": 0,
+    "auto_exposure": 1,
+    "exposure_time_absolute": 650
+  }
+}

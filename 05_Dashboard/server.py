@@ -1,34 +1,4 @@
-"""
-=============================================================================
-ĐỒ ÁN TỐT NGHIỆP KỸ SƯ - HỌC VIỆN KỸ THUẬT MẬT MÃ
-CHUYÊN NGÀNH: AN TOÀN THÔNG TIN / HỆ THỐNG NHÚNG & EDGE AI
-SINH VIÊN THỰC HIỆN: CHU MẠNH HÙNG
-
-MÃ NGUỒN: 05_Dashboard/server.py
-CHỨC NĂNG: MÁY CHỦ WEB SCADA GIÁM SÁT THỜI GIAN THỰC & ĐIỀU KHIỂN VẬN HÀNH TRÊN PI 4
-THAM CHIẾU BÁO CÁO: MỤC 3.4 - GIAO DIỆN GIÁM SÁT SCADA VÀ TRUYỀN DỮ LIỆU ĐÁM MÂY
-=============================================================================
-
-1. KIẾN TRÚC MÁY CHỦ WEB NHÚNG (EMBEDDED WEB SERVER):
-   - Sử dụng ThreadingHTTPServer của Python chuẩn (không phụ thuộc Flask/FastAPI nặng)
-     để tối ưu hóa bộ nhớ RAM và thời gian khởi động trên Raspberry Pi 4.
-   - Cơ chế bảo mật đa tầng:
-     + Khi lắng nghe trên giao diện cục bộ (127.0.0.1 loopback): Cho phép cơ chế
-       --dashboard-local-trust bỏ qua nhập mã Token để khởi động nhanh trên máy tính.
-     + Khi mở ra mạng ngoài (LAN/Wi-Fi): Bắt buộc xác thực Token mã hóa 24 ký tự
-       (DATN_DASHBOARD_TOKEN) và hỗ trợ mã hóa đường truyền qua chứng chỉ TLS/SSL.
-
-2. CÁC ĐIỂM CUỐI DỊCH VỤ (REST API ENDPOINTS & STREAMING):
-   - GET /api/state: Trả về trạng thái thời gian thực của trạm (trạng thái động cơ, cảm biến,
-     hàng đợi FIFO, số lượng PASS/DEFECT/ERROR, nhịp tim thiết bị ESP32).
-   - POST /api/runs: Khởi tạo một phiên vận hành mới với tên tường minh (Named Run).
-   - GET /api/runs: Liệt kê danh sách lịch sử các đợt kiểm thử với số liệu thống kê.
-   - GET /api/run/<run_id>.json và .csv: Xuất báo cáo dữ liệu kiểm định phục vụ lưu trữ.
-   - POST /api/command: Phát lệnh vận hành (START, STOP, DRY_RUN, SORTING_ON).
-   - POST /api/settings: Tùy chỉnh thông số động cơ (PWM), độ sáng LED, và góc gạt Servo.
-   - GET /stream: Luồng phát video MJPEG trực tiếp (multipart/x-mixed-replace) với độ trễ thấp (<150ms).
-=============================================================================
-"""
+"""Local web dashboard for the active Pi station; no extra camera or UART owner."""
 
 from collections import Counter, deque
 import csv

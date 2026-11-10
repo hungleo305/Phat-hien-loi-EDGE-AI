@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0d1621">
+  <title>DATN · Trung tâm vận hành</title>
+  <link rel="stylesheet" href="/dashboard.css?v=20261030_v7">
+</head>
+
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">D<span>·</span></div>
+        <div><strong>DATN</strong><small>EDGE INSPECTION</small></div>
+      </div>
+      <div class="side-title">HỆ THỐNG</div>
+      <a class="nav active" href="#overview"><span class="nav-icon">▦</span> Tổng quan <span
+          class="nav-arrow">↗</span></a>
+      <a class="nav" href="#capture"><span class="nav-icon">◫</span> Buồng chụp</a>
+      <a class="nav" id="openSettingsNav" href="javascript:void(0)"><span class="nav-icon">⚙</span> Cài đặt thiết bị</a>
+      <a class="nav" href="#historyPanel"><span class="nav-icon">≡</span> Lịch sử kiểm tra</a>
+      <div class="sidebar-bottom"><span class="pulse"></span><span id="sideConnection">Đang kết nối…</span><small>Pi ↔
+          ESP32 · Stop&Go</small></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar" id="overview">
+        <div>
+          <h1>Trung tâm vận hành</h1>
+          <p>Giám sát phân loại hộp và điều khiển băng tải theo trạng thái thực tế.</p>
+        </div>
+        <div class="top-right"><button id="openSettingsTop" class="settings-btn" type="button">⚙ Cài đặt thông
+            số</button><button id="themeToggle" class="theme-toggle" type="button"
+            aria-label="Chuyển giao diện sáng tối">☀ Giao diện sáng</button><span id="clock"></span><span
+            id="systemBadge" class="status-badge muted"><i></i>ĐANG KẾT NỐI</span></div>
+      </header>
+
+      <div id="notice" class="notice" role="status" aria-live="polite">Nhập mã truy cập để xem trạng thái trạm.</div>
+      <section id="login" class="login panel">
+        <div>
+          <h2>Kết nối dashboard</h2>
+          <p>Nhập mã truy cập đã cấu hình trên Pi. Mã chỉ được giữ trong phiên trình duyệt này.</p>
+        </div>
+        <form id="loginForm"><label for="token">Mã truy cập</label>
+          <div class="login-row"><input id="token" type="password" autocomplete="off" placeholder="DATN_DASHBOARD_TOKEN"
+              required><button class="button primary" type="submit">Kết nối <span>→</span></button></div>
+        </form>
+      </section>
+
+      <div id="content" hidden>
+        <section class="hero-grid">
+          <div class="panel machine-panel">
+            <div class="section-head">
+              <div>
+                <h2>Luồng vận hành</h2>
+              </div><span id="modeBadge" class="chip">…</span>
+            </div>
+            <div class="machine-state"><span id="machineDot" class="machine-dot"></span>
+              <div><strong id="machineState">Chưa có dữ liệu</strong><small id="machineDetail">Đợi phản hồi từ
+                  ESP32</small></div>
+            </div>
+            <div class="process">
+              <div class="process-node"><span class="node-icon">①</span><strong>Cảm biến chụp</strong><small
+                  id="cameraSensor">…</small></div>
+              <div class="connector"></div>
+              <div class="process-node"><span class="node-icon">②</span><strong>Camera + AI</strong><small
+                  id="aiStatus">…</small></div>
+              <div class="connector"></div>
+              <div class="process-node"><span class="node-icon">③</span><strong>Cảm biến gạt</strong><small
+                  id="gateSensor">…</small></div>
+            </div>
+            <div class="machine-footer">
+              <div><span>Hàng đợi FIFO</span><strong id="queueCount">— / 8</strong></div>
+              <div><span>Hộp gần nhất</span><strong id="boxId">…</strong></div>
+              <div><span>Phiên ESP32</span><strong id="sessionId">…</strong></div>
+            </div>
+          </div>
+          <div class="panel control-panel">
+            <div class="section-head">
+              <div>
+                <h2>Băng tải & phân loại</h2>
+              </div><span class="control-live">● LIVE</span>
+            </div>
+            <div class="control-actions"><button id="startButton" class="big-button start" data-command="START"
+                disabled><span class="button-icon">▶</span><span><strong>Chạy băng tải</strong><small>Yêu cầu Pi và
+                    ESP32 sẵn sàng</small></span></button><button id="stopButton" class="big-button stop"
+                data-command="STOP" disabled><span class="button-icon">■</span><span><strong>Dừng băng
+                    tải</strong><small>Hủy theo dõi hộp đang trên băng</small></span></button></div>
+            <div class="mode-title">CHẾ ĐỘ GẠT</div>
+            <div class="mode-actions"><button id="dryButton" class="mode-button" data-command="DRY" disabled>Không gạt
+                <small>Chạy thử</small></button><button id="sortButton" class="mode-button" data-command="SORT"
+                disabled>Gạt lỗi <small>Vận hành</small></button></div>
+            <p class="control-hint">Sau khi dừng, lấy hết hộp khỏi băng tải và làm trống hai cảm biến trước khi chạy
+              lại.</p>
+          </div>
+        </section>
+
+        <!-- Pop-up Modal Cài đặt thông số -->
+        <div id="settingsModal" class="modal-overlay" hidden>
+          <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
+            <div class="modal-header">
+              <div>
+                <h2 id="settingsModalTitle">⚙ Cài đặt thông số hệ thống</h2>
+                <p class="modal-subtitle">Điều chỉnh đèn LED, tốc độ băng tải, góc tay gạt và cấu hình camera</p>
+              </div>
+              <button id="settingsCloseBtn" class="modal-close" type="button" aria-label="Đóng cài đặt">✕</button>
+            </div>
+            <div class="modal-body">
+              <section class="settings-grid" id="settingsPanel">
+                <div class="panel setting-panel">
+                  <div class="section-head">
+                    <div>
+                      <h2>Đèn LED</h2>
+                      <p class="setting-note">Mức khởi động ESP32: 30 / 255</p>
+                    </div>
+                  </div>
+                  <label for="lightValue">Độ sáng đèn LED · <span id="lightActual">…</span> / 255</label>
+                  <div class="setting-row"><input id="lightValue" type="number" min="0" max="255" step="1"
+                      value="30"><button id="lightApply" class="button primary" disabled>Áp dụng đèn</button></div>
+                </div>
+                <div class="panel setting-panel">
+                  <div class="section-head">
+                    <div>
+                      <h2>Tốc độ băng tải</h2>
+                      <p class="setting-note">Mức khởi động ESP32: 160 / 255</p>
+                    </div>
+                  </div>
+                  <label for="speedValue">PWM hiện tại · <span id="speedActual">…</span> / 255</label>
+                  <div class="setting-row"><input id="speedValue" type="number" min="1" max="255" step="1"
+                      value="160"><button id="speedApply" class="button primary" disabled>Áp dụng tốc độ</button></div>
+                  <p class="setting-note">PWM là mức điều khiển motor, không phải cm/giây. Chỉ đổi khi băng dừng và
+                    không có hộp.</p>
+                </div>
+                <div class="panel setting-panel">
+                  <div class="section-head">
+                    <div>
+                      <h2>Thanh gạt SG90</h2>
+                      <p class="setting-note">Dừng băng và lấy hết hộp trước khi chỉnh.</p>
+                    </div>
+                  </div>
+                  <label for="servoAngle">Góc gạt · đang dùng <span id="servoAngleActual">…</span>° · gốc 35°</label>
+                  <div class="setting-row"><input id="servoAngle" type="number" min="1" max="90" step="1"
+                      value="35"><button id="servoAngleApply" class="button primary" disabled>Áp dụng góc</button></div>
+                  <label for="servoSpeed">Tốc độ lệnh · đang dùng <span id="servoSpeedActual">…</span>°/s · gốc
+                    90°/s</label>
+                  <div class="setting-row"><input id="servoSpeed" type="number" min="30" max="240" step="1"
+                      value="90"><button id="servoSpeedApply" class="button primary" disabled>Áp dụng tốc độ</button>
+                  </div>
+                  <label for="servoHold">Giữ ngoài tối thiểu · đang dùng <span id="servoHoldActual">…</span> ms · gốc
+                    350 ms</label>
+                  <div class="setting-row"><input id="servoHold" type="number" min="150" max="1500" step="1"
+                      value="350"><button id="servoHoldApply" class="button primary" disabled>Áp dụng giữ</button></div>
+                  <p id="servoNote" class="setting-note">Cần firmware mới để chỉnh từ dashboard. Thời gian giữ thực tế
+                    có thể dài hơn vì servo phải di chuyển xong. Tốc độ lệnh không đo lực gạt.</p>
+                </div>
+                <div class="panel setting-panel">
+                  <div class="section-head">
+                    <div>
+                      <h2>Hình ảnh buồng chụp</h2>
+                    </div><button id="cameraRefresh" class="button subtle">Làm mới</button>
+                  </div>
+                  <label for="cameraField">Thông số</label><select id="cameraField" disabled>
+                    <option>Đang đọc camera…</option>
+                  </select>
+                  <label for="cameraValue">Giá trị đang chạy: <span id="cameraActual">…</span> · đã lưu: <span
+                      id="cameraSaved">…</span></label>
+                  <p id="cameraRange" class="setting-note">…</p>
+                  <div class="setting-row"><input id="cameraValue" type="number" disabled><button id="cameraApply"
+                      class="button primary" disabled>Áp dụng thử</button></div>
+                  <div class="setting-buttons"><button id="cameraSave" class="button subtle" disabled>Lưu khi khởi
+                      động</button><button id="cameraRestore" class="button subtle" disabled>Khôi phục cấu hình
+                      gốc</button></div>
+                  <p id="cameraSettingNote" class="setting-note">Áp dụng thử chỉ đổi camera hiện tại. Xem ảnh live và
+                    kết quả trước khi lưu.</p>
+                  <p id="cameraProfileNote" class="setting-note">Đang đọc cấu hình khởi động...</p>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+
+        <section class="metrics">
+          <div class="metric panel"><span>TỔNG KẾT QUẢ ĐÃ GỬI</span><strong id="totalCount">0</strong><small>Trong phiên
+              trạm hiện tại</small></div>
+          <div class="metric panel good"><span>ĐẠT · PASS</span><strong id="passCount">0</strong><small>Kết quả PASS đã
+              gửi ESP32</small></div>
+          <div class="metric panel bad"><span>LỖI · DEFECT</span><strong id="defectCount">0</strong><small>Kết quả
+              DEFECT đã gửi ESP32</small></div>
+          <div class="metric panel warn"><span>LỖI VẬN HÀNH</span><strong id="errorCount">0</strong><small>Cần kiểm tra
+              trước khi chạy</small></div>
+        </section>
+
+        <section class="lower-grid">
+          <div class="panel live-panel" id="live">
+            <div class="section-head">
+              <div>
+                <h2>Khung hình hiện tại</h2>
+              </div><span class="control-live">● LIVE</span>
+            </div>
+            <div class="live-frame"><img id="liveImage" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+                alt="Hình trực tiếp từ camera buồng chụp" hidden>
+              <div id="liveEmpty" class="capture-empty"><span>◉</span><strong>Đang chờ camera</strong><small>Hình sẽ
+                  hiện khi trạm Pi và camera sẵn sàng.</small></div>
+            </div>
+            <p id="liveStatus" class="live-status" role="status">Đang kết nối camera...</p>
+          </div>
+          <div class="panel capture-panel" id="capture">
+            <div class="section-head">
+              <div>
+                <h2>Ảnh kiểm tra gần nhất</h2>
+              </div><span id="captureTime" class="soft-label">…</span>
+            </div>
+            <div id="captureFrame" class="capture-frame"><img id="captureImage"
+                src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Ảnh kết quả kiểm tra gần nhất"
+                hidden>
+              <div id="captureEmpty" class="capture-empty"><span>◈</span><strong>Chưa có ảnh kiểm tra</strong><small>Ảnh
+                  sẽ xuất hiện sau yêu cầu CAPTURE đầu tiên.</small></div>
+            </div>
+            <div class="capture-info"><span id="lastResult" class="result-chip neutral">CHƯA CÓ KẾT QUẢ</span><span
+                id="lastReason">Đang chờ hộp đầu tiên</span><span id="lastLatency">…</span></div>
+          </div>
+          <div class="panel history-panel" id="historyPanel">
+            <div class="section-head">
+              <div>
+                <h2>Kết quả gần đây</h2>
+              </div>
+              <div class="run-tools">
+                <label for="runSelect">Lượt chạy</label>
+                <select id="runSelect" aria-label="Chọn lượt chạy">
+                  <option value="current">Phiên hiện tại</option>
+                </select>
+                <button id="runRefresh" class="button subtle run-button" type="button">Làm mới</button>
+                <button id="downloadCsv" class="button subtle run-button" type="button">Tải CSV</button>
+                <button id="downloadJson" class="button subtle run-button" type="button">Tải JSON</button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID HỘP</th>
+                    <th>KẾT QUẢ</th>
+                    <th>ĐỘ TRỄ</th>
+                    <th>THỜI GIAN</th>
+                  </tr>
+                </thead>
+                <tbody id="history">
+                  <tr>
+                    <td colspan="4" class="empty-row">Chưa có kết quả.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="history-footer"><span id="runSummary">Phiên hiện tại · quyết định cuối cùng từ trạm Pi</span><span id="lastUpdate">…</span></div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script src="/dashboard.js?v=20261030_v7" defer></script>
+</body>
+
+</html>

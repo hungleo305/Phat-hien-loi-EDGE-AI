@@ -1,6 +1,7 @@
 #!/bin/bash
 # =============================================================================
-# Quy trình chuyển đổi & Lượng tử hóa mô hình YOLOv8n sang NCNN FP16
+# Ví dụ lịch sử ONNX -> NCNN FP16, không phải lệnh tạo model production hiện hành.
+# Để tạo ứng viên từ đúng hai checkpoint production, dùng export_ncnn.py.
 # Tham chiếu Thuyết minh ĐATN: Mục 3.2.3.3
 # =============================================================================
 
@@ -20,6 +21,6 @@ echo "[Bước 3/4] Tối ưu hóa cấu trúc mạng & Lượng tử hóa FP16.
 ncnnoptimize model.param model.bin model.ncnn.param model.ncnn.bin 65536
 
 # Bước 4: Kiểm tra tính hợp lệ và cấu hình metadata
-echo "[Bước 4/4] Hoàn tất lượng tử hóa NCNN FP16."
+echo "[Bước 4/4] Hoàn tất bản ví dụ NCNN FP16; chưa kiểm định để triển khai."
 ls -lh model.ncnn.param model.ncnn.bin
 

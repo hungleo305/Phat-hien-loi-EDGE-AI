@@ -1,44 +1,85 @@
-# THƯ MỤC 04: CODE VI ĐIỀU KHIỂN ESP32 (FIRMWARE)
+# Firmware ESP32 — bắt đầu tại đây
 
-> **Ánh xạ thuyết minh đồ án:** Mục 3.3.1 (Lập trình vi điều khiển ESP32 - FreeRTOS, FSM Stop & Go, PWM và Servo).
+ESP-IDF 5.3.5, ESP32. Banner `SINGLE_TASK_UART2_20261109`.
+Một task ứng dụng điều khiển motor, servo, hai cảm biến, LED và giao tiếp Pi UART2.
+UART0 chỉ xuất log, không nhận lệnh. Bản mới đã build; chưa nạp/nghiệm thu cơ khí.
 
----
+## Thư mục này chứa gì?
 
-## 1. Danh sách các tệp trong thư mục
-
-| Tên tệp | Vai trò |
-|---|---|
-| **`main/ESP32_Firmware.c`** | **Mã nguồn C chính:** Khởi tạo các chân GPIO, thiết lập 2 tác vụ FreeRTOS (`control_task` ưu tiên 5, `console_task` ưu tiên 4) và hàm `app_main`. |
-| **`main/motor.c` & `motor.h`** | Điều khiển động cơ băng tải DC qua mạch cầu H (LEDC PWM 20 kHz) với thuật toán tăng tốc mềm (Ramp-up/Ramp-down) chống giật quán tính sản phẩm. |
-| **`main/servo.c` & `servo.h`** | Điều khiển cánh gạt phân loại SG90 bằng **profile 3 bước dứt khoát** ($0^\circ \rightarrow 12^\circ \rightarrow 23^\circ \rightarrow 35^\circ$ trong 150 ms) triệt tiêu rung giật vùng chết analog (deadband). |
-| **`main/sensor.c` & `sensor.h`** | Đọc tín hiệu 2 cảm biến quang NPN (chụp ảnh & phân loại) với thuật toán lọc chống nhiễu tiếp điểm (Debounce 30 ms). |
-| **`main/protocol.c` & `protocol.h`** | Bộ phân tích cú pháp UART ASCII giao tiếp với Raspberry Pi (`HELLO`, `READY`, `CAPTURE`, `RESULT`). |
-| **`main/led.c` & `led.h`** | Điều khiển độ sáng đèn LED chiếu sáng sản phẩm bằng điều chế độ rộng xung PWM. |
-| **`CMakeLists.txt` & `sdkconfig`** | Tệp cấu hình dự án chuẩn ESP-IDF phiên bản 5.3.5. |
-| **`build/ESP32_Firmware.bin`** | **Bản nhị phân đã biên dịch sẵn**, có thể nạp thẳng vào ESP32 qua cổng COM bằng công cụ `esptool.py`. |
-
----
-
-## 2. Máy trạng thái hữu hạn Stop & Go (10 trạng thái)
-
-Firmware hiện thực hóa FSM chuẩn công nghiệp gồm 10 trạng thái:
-1. `SG_STOPPED`: Trạm dừng an toàn, động cơ tắt.
-2. `SG_STARTING`: Bắt đầu khởi động, kiểm tra cảm biến.
-3. `SG_RUNNING`: Băng tải đang chạy kéo sản phẩm vào vùng chụp.
-4. `SG_STOPPING_FOR_CAPTURE`: Phát hiện hộp tại cảm biến chụp, hãm phanh mềm động cơ.
-5. `SG_SETTLING`: Dừng chờ 150 ms để triệt tiêu dao động cơ học trước khi chụp.
-6. `SG_WAIT_CAPTURE`: Gửi lệnh `CAPTURE` qua UART và chờ Pi chụp ảnh xong.
-7. `SG_WAIT_DECISION`: Động cơ tiếp tục chạy đưa hộp về phía phân loại, đồng thời chờ kết quả AI từ Pi.
-8. `SG_SORTING_DEFECT`: Kích hoạt servo gạt hộp lỗi sang khay DEFECT.
-9. `SG_SORTING_PASS`: Mở đường cho hộp đạt tiêu chuẩn đi thẳng qua khay PASS.
-10. `SG_FAULT`: Trạng thái dừng khẩn cấp khi phát hiện lỗi kẹt hộp hoặc mất đồng bộ.
-
----
-
-## 3. Lệnh nạp Flash vào ESP32
-
-```powershell
-# Nạp trực tiếp qua cổng COM (ví dụ COM3)
-esptool.py --chip esp32 -p COM3 -b 460800 write_flash 0x10000 build/ESP32_Firmware.bin
+```text
+ESP32_Firmware/
+├── README.md          Đọc trước
+├── main/              Mã nguồn C cần đọc/sửa
+├── docs/              Hướng dẫn đấu nối và vận hành
+├── build.ps1          Build firmware, KHÔNG nạp thiết bị
+├── CMakeLists.txt     Khai báo dự án ESP-IDF
+├── sdkconfig          Cấu hình chip/FreeRTOS/driver, cần giữ
+├── .vscode/           Cấu hình VS Code, thường không cần sửa
+└── .clangd            Cấu hình gợi ý/kiểm tra mã, thường không cần sửa
 ```
 
+Không còn build trong thư mục mã nguồn. File tự sinh được đặt riêng tại:
+`F:\DATN\Cong_cu_phat_trien\outputs\esp32_build`.
+Không sửa code trong outputs hoặc Luu_tru.
+
+## Đọc mã theo thứ tự nào?
+
+| File trong main | Vai trò |
+|---|---|
+| `app_config.h` | GPIO, mức motor/LED, góc servo, các thời gian mặc định |
+| `ESP32_Firmware.c` | app_main, một control_task, nhận lệnh dashboard và thực hiện hành động |
+| `stopgo.c` / `stopgo.h` | FSM, FIFO hộp, timeout và FAULT |
+| `protocol.c` / `protocol.h` | Kiểm tra cú pháp bản tin với Pi |
+| `uart.c` / `uart.h` | Gửi/nhận UART2, xử lý lỗi truyền |
+| `motor.c` / `motor.h` | Motor L298N và PWM |
+| `servo.c` / `servo.h` | PWM góc servo và ước lượng thời gian di chuyển |
+| `sensor.c` / `sensor.h` | Đọc GPIO hai cảm biến; debounce nằm trong task điều khiển |
+| `led.c` / `led.h` | PWM độ sáng buồng chụp |
+| `CMakeLists.txt` | Danh sách file C cần biên dịch |
+
+File `.c` chứa phần thực hiện; `.h` khai báo hàm/kiểu dữ liệu cho các file dùng
+chung. Các cặp này có vai trò riêng, không phải bản sao thừa.
+
+Mỗi vòng điều khiển: cảm biến/servo → FSM/FIFO → kiểm heartbeat → nhận tối đa
+8 dòng UART2 → gửi trạng thái → nhường CPU 10 ms. Giữ task priority 5,
+stack 6144 byte; chỉ task này quản lý trạng thái máy, không cần semaphore ứng dụng.
+
+## Build bằng một lệnh
+
+Mở PowerShell ở thư mục này:
+
+```powershell
+.\build.ps1
+```
+
+Script dùng các công cụ ESP-IDF đang cài ở `C:\Espressif`; mọi đầu ra dự án
+đều ở ổ F. Có thể chạy lại sau khi sửa code. Nếu chỉ muốn sửa/đọc mã,
+không cần mở thư mục build.
+
+## Trong build có gì? Vì sao nhiều file?
+
+ESP-IDF biên dịch cả mã của bạn và thư viện nền. Hàng nghìn file được sinh tự
+động là bình thường; không phải hàng nghìn file bạn phải đọc hay duy trì.
+
+| File/thư mục trong outputs/esp32_build | Dùng làm gì? |
+|---|---|
+| `ESP32_Firmware.bin` | Chương trình ứng dụng để nạp |
+| `bootloader/bootloader.bin` | Chương trình khởi động chip |
+| `partition_table/partition-table.bin` | Bảng bố trí vùng flash |
+| `flash_args` / `flasher_args.json` | Địa chỉ và tham số nạp đúng bộ binary |
+| `ESP32_Firmware.elf` / `.map` | Debug, tra hàm và phân tích bộ nhớ |
+| `compile_commands.json` | Giúp VS Code/clangd hiểu đúng mã nguồn |
+| `config/` | Header cấu hình tự sinh từ sdkconfig |
+| `esp-idf/`, `CMakeFiles/`, các file còn lại | File trung gian; công cụ tự quản lý |
+
+Không nạp riêng app vào địa chỉ tự đoán; dùng cùng bộ bootloader/partition/app
+và tham số nạp. Xem [đấu nối và nạp](docs/DAU_NOI_VA_NAP_CODE.md).
+
+## Vận hành và bản cũ
+
+- [Vận hành/kiểm thử qua dashboard](docs/HUONG_DAN_VAN_HANH_FIFO.md).
+- Build cũ, cache, compile_commands cũ và tài liệu thử lịch sử:
+  `F:\DATN\Luu_tru\20261109\esp32_sap_xep_thu_muc`; `moves.json` ghi từng mục đã chuyển.
+- Công cụ giả lập Pi: `F:\DATN\Luu_tru\20261109\cong_cu_phat_trien_don_dep\work\esp32_uart_tools\mock_pi.py`;
+  chỉ thử giao thức, không thay AI hoặc dashboard vận hành.
+- Mã nguồn/GPIO/PWM/tham số không thay đổi trong lượt sắp xếp thư mục.

@@ -1,0 +1,10 @@
+{
+  "files_sha256": {
+    "dashboard.css": "495c14bce4dadcae59d687c7be2589d8bbbbe08ae814dcbb0a7ffef10dcc6650",
+    "dashboard.html": "aaa050f05dbcc62e2be6103c9ca589d284bda9a4fcf614e58724b17f8c993e42",
+    "dashboard.js": "ccf0ab72f841dd754ad2bef62459d04634b603b6e1e39b732e56ba1a5fae0352",
+    "dashboard.py": "e3f3ef7c8c1e816f919c160d3332816a2fba4a0b2485da15a4302a367188a153",
+    "run_station.py": "5140595ffd9dcc25604745ff9c94e9132082f7455c3795f3e963fecd6f4f2d4c",
+    "station_protocol.py": "dd391e33df1d197cf887678775ea105a69b6d41cf748830fd686fbd1877dd2e7"
+  }
+}

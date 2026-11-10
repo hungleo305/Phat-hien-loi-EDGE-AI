@@ -1464,36 +1464,11 @@ html[data-theme="light"] .button.subtle:not(:disabled):hover {
 
 /* Run history: visual-only controls; no change to camera or inference layout. */
 .run-tools {
-  display: grid;
-  gap: 10px;
-  width: 100%;
-}
-
-.history-panel .section-head {
-  align-items: stretch;
-  flex-direction: column;
-}
-
-.run-create-group {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 7px;
-}
-
-.run-view-group {
-  display: grid;
-  gap: 7px;
-}
-
-.run-create-group label,
-.run-view-group label {
-  grid-column: 1 / -1;
-}
-
-.run-actions {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .run-tools label {
@@ -1504,26 +1479,16 @@ html[data-theme="light"] .button.subtle:not(:disabled):hover {
   text-transform: uppercase;
 }
 
-.run-tools select,
-.run-tools input {
-  min-width: 0;
-  width: 100%;
+.run-tools select {
+  min-width: 250px;
   min-height: 38px;
-  padding: 0 10px;
+  padding: 0 34px 0 10px;
   border: 1px solid var(--border-subtle);
   border-radius: 7px;
   background: var(--bg-input);
   color: var(--text-main);
   font-family: var(--font-mono);
   font-size: 12px;
-}
-
-.run-tools select {
-  padding-right: 34px;
-}
-
-.run-tools input::placeholder {
-  color: var(--text-muted);
 }
 
 .run-button {
@@ -1533,10 +1498,27 @@ html[data-theme="light"] .button.subtle:not(:disabled):hover {
 }
 
 @media (max-width: 900px) {
-  .run-tools { width: 100%; }
+  .history-panel .section-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .run-tools {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .run-tools select {
+    flex: 1 1 240px;
+  }
 }
 
 @media (max-width: 560px) {
-  .run-create-group { grid-template-columns: 1fr; }
-  .run-actions { grid-template-columns: 1fr; }
+  .run-tools label {
+    width: 100%;
+  }
+
+  .run-button {
+    flex: 1;
+  }
 }

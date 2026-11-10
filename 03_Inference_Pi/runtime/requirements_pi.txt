@@ -1,0 +1,6 @@
+ultralytics==8.3.228
+ncnn==1.0.20260526
+opencv-python>=4.11,<5
+numpy>=2.2,<2.3
+torch>=2.7,<2.8
+pyserial==3.5

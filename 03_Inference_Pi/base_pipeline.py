@@ -11,7 +11,7 @@ import time
 import cv2
 import numpy as np
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parent / "runtime"
 os.environ.setdefault("YOLO_CONFIG_DIR", str(ROOT / "runs" / "yolo_config"))
 from ultralytics import YOLO
 

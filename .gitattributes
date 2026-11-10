@@ -1,0 +1,3 @@
+# Preserve verified release bytes across Windows/Linux checkouts.
+03_Inference_Pi/runtime/** -text
+05_Dashboard/station/** -text
