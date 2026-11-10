@@ -238,7 +238,6 @@ function render(data) {
   const servoReady = settingsReady && device?.servo_angle != null && !device?.servo_moving;
   const servoFields = [
     ['servoAngle', 'servoAngleActual', 'servoAngleApply', device?.servo_angle],
-    ['servoSpeed', 'servoSpeedActual', 'servoSpeedApply', device?.servo_speed],
     ['servoHold', 'servoHoldActual', 'servoHoldApply', device?.servo_hold]
   ];
   for (const [input, actual, button, value] of servoFields) {
@@ -248,7 +247,7 @@ function render(data) {
   }
   $('servoNote').textContent = device?.servo_angle == null
     ? 'Cần nạp firmware ESP32 hỗ trợ cài đặt servo để chỉnh từ dashboard.'
-    : `Giữ ngoài thực tế: ${device.servo_effective} ms. Tốc độ lệnh không đo lực gạt; chỉ chỉnh khi băng dừng và trống.`;
+    : `Thời gian chờ áp dụng: ${device.servo_effective ?? '—'} ms (theo chương trình), tính từ lúc phát lệnh gạt. Có thể dài hơn mức đặt. Không hỗ trợ chỉnh tốc độ quay.`;
   const cameraReady = settingsReady && cameraEditable && cameraControls.length > 0;
   $('cameraField').disabled = !cameraReady;
   $('cameraValue').disabled = !cameraReady;
@@ -297,7 +296,7 @@ function render(data) {
   if (offline) {
     notice('Pi đang tắt hoặc chưa kết nối mạng. Dashboard sẽ tự nối và mở trạm khi Pi sẵn sàng.', 'bad');
   } else if (operation && Date.now() / 1000 - operation.updated < 8) {
-    const names = { START: 'Chạy', STOP: 'Dừng', DRY: 'Không gạt', SORT: 'Gạt lỗi', SPEED: 'Tốc độ', LIGHT: 'Đèn', SERVO_ANGLE: 'Góc gạt', SERVO_SPEED: 'Tốc độ gạt', SERVO_HOLD: 'Giữ ngoài' };
+    const names = { START: 'Chạy', STOP: 'Dừng', DRY: 'Không gạt', SORT: 'Gạt lỗi', SPEED: 'Tốc độ', LIGHT: 'Đèn', SERVO_ANGLE: 'Góc gạt', SERVO_SPEED: 'Tham số thời gian servo (cũ)', SERVO_HOLD: 'Chờ trước khi thu tay gạt' };
     const states = { queued: 'đang chờ gửi', sent: 'đã gửi tới ESP32', accepted: 'ESP32 đã chấp nhận', denied: 'ESP32 từ chối', timeout: 'chưa nhận xác nhận', cancelled: 'đã hủy do trạng thái thay đổi' };
     notice(`${names[operation.verb]}: ${states[operation.state] || operation.state}`, operation.state === 'accepted' ? 'good' : ['denied', 'timeout', 'cancelled'].includes(operation.state) ? 'bad' : '');
   } else if (fault) {
@@ -413,7 +412,6 @@ $('speedApply').addEventListener('click', () => {
 });
 for (const [input, button, target] of [
   ['servoAngle', 'servoAngleApply', 'SERVO_ANGLE'],
-  ['servoSpeed', 'servoSpeedApply', 'SERVO_SPEED'],
   ['servoHold', 'servoHoldApply', 'SERVO_HOLD']
 ]) {
   $(button).addEventListener('click', () => {

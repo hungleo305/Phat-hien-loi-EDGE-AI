@@ -141,20 +141,14 @@
                       <p class="setting-note">Dừng băng và lấy hết hộp trước khi chỉnh.</p>
                     </div>
                   </div>
-                  <label for="servoAngle">Góc gạt · đang dùng <span id="servoAngleActual">…</span>° · gốc 35°</label>
+                  <label for="servoAngle">Góc đặt cho tay gạt · đang dùng <span id="servoAngleActual">…</span>° · gốc 35°</label>
                   <div class="setting-row"><input id="servoAngle" type="number" min="1" max="90" step="1"
                       value="35"><button id="servoAngleApply" class="button primary" disabled>Áp dụng góc</button></div>
-                  <label for="servoSpeed">Tốc độ lệnh · đang dùng <span id="servoSpeedActual">…</span>°/s · gốc
-                    90°/s</label>
-                  <div class="setting-row"><input id="servoSpeed" type="number" min="30" max="240" step="1"
-                      value="90"><button id="servoSpeedApply" class="button primary" disabled>Áp dụng tốc độ</button>
-                  </div>
-                  <label for="servoHold">Giữ ngoài tối thiểu · đang dùng <span id="servoHoldActual">…</span> ms · gốc
+                  <label for="servoHold">Chờ trước khi thu tay gạt · đang dùng <span id="servoHoldActual">…</span> ms · gốc
                     350 ms</label>
                   <div class="setting-row"><input id="servoHold" type="number" min="150" max="1500" step="1"
-                      value="350"><button id="servoHoldApply" class="button primary" disabled>Áp dụng giữ</button></div>
-                  <p id="servoNote" class="setting-note">Cần firmware mới để chỉnh từ dashboard. Thời gian giữ thực tế
-                    có thể dài hơn vì servo phải di chuyển xong. Tốc độ lệnh không đo lực gạt.</p>
+                      value="350"><button id="servoHoldApply" class="button primary" disabled>Áp dụng thời gian</button></div>
+                  <p id="servoNote" class="setting-note">Thời gian tính từ lúc phát lệnh gạt, không phải từ lúc tay gạt đã tới góc ngoài. Không hỗ trợ chỉnh tốc độ quay trên dashboard.</p>
                 </div>
                 <div class="panel setting-panel">
                   <div class="section-head">
@@ -228,13 +222,23 @@
                 <h2>Kết quả gần đây</h2>
               </div>
               <div class="run-tools">
-                <label for="runSelect">Lượt chạy</label>
-                <select id="runSelect" aria-label="Chọn lượt chạy">
-                  <option value="current">Phiên hiện tại</option>
-                </select>
-                <button id="runRefresh" class="button subtle run-button" type="button">Làm mới</button>
-                <button id="downloadCsv" class="button subtle run-button" type="button">Tải CSV</button>
-                <button id="downloadJson" class="button subtle run-button" type="button">Tải JSON</button>
+                <div class="run-create-group">
+                  <label for="runName">Phiên mới</label>
+                  <input id="runName" type="text" maxlength="80" autocomplete="off"
+                    placeholder="VD: Kiểm thử ánh sáng 01" aria-label="Tên phiên vận hành mới">
+                  <button id="createRun" class="button subtle run-button" type="button">Tạo phiên</button>
+                </div>
+                <div class="run-view-group">
+                  <label for="runSelect">Xem phiên</label>
+                  <select id="runSelect" aria-label="Chọn phiên để xem">
+                    <option value="current">Chưa tạo phiên vận hành</option>
+                  </select>
+                  <div class="run-actions">
+                    <button id="runRefresh" class="button subtle run-button" type="button">Làm mới</button>
+                    <button id="downloadCsv" class="button subtle run-button" type="button">Tải CSV</button>
+                    <button id="downloadJson" class="button subtle run-button" type="button">Tải JSON</button>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="table-wrap">
@@ -254,13 +258,13 @@
                 </tbody>
               </table>
             </div>
-            <div class="history-footer"><span id="runSummary">Phiên hiện tại · quyết định cuối cùng từ trạm Pi</span><span id="lastUpdate">…</span></div>
+            <div class="history-footer"><span id="runSummary">Chưa tạo phiên vận hành</span><span id="lastUpdate">…</span></div>
           </div>
         </section>
       </div>
     </main>
   </div>
-  <script src="/dashboard.js?v=20261030_v7" defer></script>
+  <script src="/dashboard.js?v=20261102_named_runs_v1" defer></script>
 </body>
 
 </html>
