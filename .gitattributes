@@ -1,3 +1,4 @@
 # Preserve verified release bytes across Windows/Linux checkouts.
-03_Inference_Pi/runtime/** -text
-05_Dashboard/station/** -text
+03_Inference_Pi/runtime/** -text whitespace=cr-at-eol
+05_Dashboard/station/** -text whitespace=cr-at-eol
+
