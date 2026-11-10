@@ -2,7 +2,7 @@
 
 ESP-IDF 5.3.5, ESP32. Banner `SINGLE_TASK_UART2_20261109`.
 Một task ứng dụng điều khiển motor, servo, hai cảm biến, LED và giao tiếp Pi UART2.
-UART0 chỉ xuất log, không nhận lệnh. Bản mới đã build; chưa nạp/nghiệm thu cơ khí.
+UART0 chỉ xuất log, không nhận lệnh. Bản `SINGLE_TASK_UART2_20261109` đã được nạp lên ESP32 theo xác nhận của người vận hành. Việc gạt hộp và nghiệm thu cơ khí chưa được kiểm tra đầy đủ.
 
 ## Thư mục này chứa gì?
 
