@@ -11,6 +11,7 @@ import sys
 import threading
 import time
 
+from startup_defaults import StartupDefaults
 from station_protocol import Lines, Transactions
 from dashboard import Dashboard, parse_device_line
 
@@ -242,6 +243,7 @@ def main():
         last_display = None
         fatal = None
         started = time.monotonic()
+        defaults = StartupDefaults(addon/'station_defaults.json')
         last_ping = 0.0
         event('starting', port=args.port, camera=args.camera, capture_folder=str(audit.folder))
         while not args.run_seconds or time.monotonic()-started < args.run_seconds:
@@ -297,8 +299,9 @@ def main():
                     pending = None
                 available = available and transactions.active is None
             if dashboard:
+                defaults_ready = defaults.tick(dashboard, event)
                 dashboard.update_station(
-                    ready=available, camera=camera.healthy(),
+                    ready=available and defaults_ready, camera=camera.healthy(),
                     fault=fatal or audit.error, busy=busy is not None,
                     pending=pending is not None, queue=len(transactions.outstanding),
                     ai_ready=model_ready)

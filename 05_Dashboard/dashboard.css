@@ -505,7 +505,7 @@ button:disabled {
   max-height: 88vh;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+  box-shadow: none;
   animation: modalFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -591,8 +591,8 @@ button:disabled {
   font-weight: 700;
   color: var(--text-dim);
   margin-bottom: 6px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 .setting-panel label span {
@@ -999,7 +999,15 @@ button:disabled {
   display: block;
 }
 
+.capture-frame img[hidden],
+.capture-frame .capture-empty[hidden] {
+  display: none !important;
+}
+
 .capture-empty {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   text-align: center;
   padding: 20px;
 }
@@ -1464,11 +1472,36 @@ html[data-theme="light"] .button.subtle:not(:disabled):hover {
 
 /* Run history: visual-only controls; no change to camera or inference layout. */
 .run-tools {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 8px;
-  flex-wrap: wrap;
+  display: grid;
+  gap: 10px;
+  width: 100%;
+}
+
+.history-panel .section-head {
+  align-items: stretch;
+  flex-direction: column;
+}
+
+.run-create-group {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 7px;
+}
+
+.run-view-group {
+  display: grid;
+  gap: 7px;
+}
+
+.run-create-group label,
+.run-view-group label {
+  grid-column: 1 / -1;
+}
+
+.run-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
 }
 
 .run-tools label {
@@ -1479,16 +1512,26 @@ html[data-theme="light"] .button.subtle:not(:disabled):hover {
   text-transform: uppercase;
 }
 
-.run-tools select {
-  min-width: 250px;
+.run-tools select,
+.run-tools input {
+  min-width: 0;
+  width: 100%;
   min-height: 38px;
-  padding: 0 34px 0 10px;
+  padding: 0 10px;
   border: 1px solid var(--border-subtle);
   border-radius: 7px;
   background: var(--bg-input);
   color: var(--text-main);
   font-family: var(--font-mono);
   font-size: 12px;
+}
+
+.run-tools select {
+  padding-right: 34px;
+}
+
+.run-tools input::placeholder {
+  color: var(--text-muted);
 }
 
 .run-button {
@@ -1498,27 +1541,10 @@ html[data-theme="light"] .button.subtle:not(:disabled):hover {
 }
 
 @media (max-width: 900px) {
-  .history-panel .section-head {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .run-tools {
-    width: 100%;
-    justify-content: flex-start;
-  }
-
-  .run-tools select {
-    flex: 1 1 240px;
-  }
+  .run-tools { width: 100%; }
 }
 
 @media (max-width: 560px) {
-  .run-tools label {
-    width: 100%;
-  }
-
-  .run-button {
-    flex: 1;
-  }
+  .run-create-group { grid-template-columns: 1fr; }
+  .run-actions { grid-template-columns: 1fr; }
 }

@@ -2,6 +2,7 @@ const $ = (id) => document.getElementById(id);
 let token = sessionStorage.getItem('datnDashboardToken') || '';
 let currentImage = null;
 let currentImageUrl = '';
+let captureRequestVersion = 0;
 let busy = false;
 let livePreviewStarted = false;
 let liveImageUrl = '';
@@ -73,7 +74,8 @@ function renderHistory(items) {
   const visible = selectedRun === 'current' ? items.slice(0, 8) : items;
   visible.forEach(item => {
     const row = document.createElement('tr');
-    makeCell(row, item.id);
+    makeCell(row, item.run_number != null ? `#${item.run_number}` : item.id);
+    row.firstElementChild.title = `Mã truy vết: ${item.id}`;
     makeCell(row, displayResult(item), `history-result ${item.delivered ? resultClass(item.result) : 'error'}`);
     makeCell(row, item.total_ms != null ? `${Math.round(item.total_ms)} ms` : '—');
     makeCell(row, timeLabel(item.at));
@@ -93,8 +95,11 @@ async function loadSelectedRun() {
     selectedRunData = null;
     return;
   }
-  const data = await (await api(`/api/run/${encodeURIComponent(selectedRun)}`)).json();
+  const requestedRun = selectedRun;
+  const data = await (await api(`/api/run/${encodeURIComponent(requestedRun)}`)).json();
+  if (selectedRun !== requestedRun) return;
   selectedRunData = data;
+  renderCounts(data.counts || {});
   renderHistory(data.results || []);
   const counts = data.counts || {};
   $('runSummary').textContent = `${data.name} · ${data.count} hộp · ${counts.PASS || 0} PASS · ${counts.DEFECT || 0} DEFECT · ${counts.ERROR || 0} ERROR`;
@@ -164,18 +169,40 @@ async function api(path, options = {}) {
   return response;
 }
 
+function clearCaptureImage() {
+  captureRequestVersion += 1;
+  currentImage = null;
+  $('captureImage').hidden = true;
+  $('captureImage').removeAttribute('src');
+  if (currentImageUrl) URL.revokeObjectURL(currentImageUrl);
+  currentImageUrl = '';
+  $('captureEmpty').hidden = false;
+}
+
 async function showImage(path) {
   if (!path || path === currentImage) return;
   currentImage = path;
+  const requestVersion = ++captureRequestVersion;
   try {
     const response = await api(path);
-    const imageUrl = URL.createObjectURL(await response.blob());
+    const blob = await response.blob();
+    if (requestVersion !== captureRequestVersion) return;
+    const imageUrl = URL.createObjectURL(blob);
     if (currentImageUrl) URL.revokeObjectURL(currentImageUrl);
     currentImageUrl = imageUrl;
     $('captureImage').src = imageUrl;
     $('captureImage').hidden = false;
     $('captureEmpty').hidden = true;
-  } catch (_) { currentImage = null; }
+  } catch (_) {
+    if (requestVersion === captureRequestVersion) currentImage = null;
+  }
+}
+
+function renderCounts(counts) {
+  $('totalCount').textContent = (counts.PASS || 0) + (counts.DEFECT || 0) + (counts.ERROR || 0);
+  $('passCount').textContent = counts.PASS || 0;
+  $('defectCount').textContent = counts.DEFECT || 0;
+  $('errorCount').textContent = counts.ERROR || 0;
 }
 
 function render(data) {
@@ -191,10 +218,7 @@ function render(data) {
   const counts = data.counts || {};
   const recent = data.recent || [];
   const total = (counts.PASS || 0) + (counts.DEFECT || 0) + (counts.ERROR || 0);
-  $('totalCount').textContent = total;
-  $('passCount').textContent = counts.PASS || 0;
-  $('defectCount').textContent = counts.DEFECT || 0;
-  $('errorCount').textContent = counts.ERROR || 0;
+  renderCounts(selectedRun === 'current' ? counts : (selectedRunData?.counts || {}));
   $('lastUpdate').textContent = `Cập nhật ${timeLabel(data.time)}`;
   if (nativeLive) {
     const fps = Math.round(data.preview_fps || 0);
@@ -217,7 +241,8 @@ function render(data) {
   $('gateSensor').textContent = device ? (device.gate ? 'Có hộp' : 'Trống') : '—';
   $('aiStatus').textContent = offline ? 'Pi ngoại tuyến' : station.fault ? 'Có lỗi' : station.busy ? 'Đang xử lý' : station.ai_ready ? 'Sẵn sàng' : 'Đang tải';
   $('queueCount').textContent = device ? `${device.queue} / 8` : '— / 8';
-  $('boxId').textContent = device ? `#${device.box_id}` : '—';
+  $('boxId').textContent = activeRun ? `#${data.run_box_count || 0}` : '—';
+  $('boxId').title = device ? `Mã hộp ESP32: ${device.box_id}` : '';
   $('sessionId').textContent = device ? device.session : '—';
   const stoppedEmpty = !!(device && device.state === 'STOPPED' && !device.motor && !device.fault && !device.queue && !device.camera && !device.gate);
   const settingsReady = stoppedEmpty && !busy && !station.busy && !station.pending && !station.queue;
@@ -272,11 +297,7 @@ function render(data) {
     $('captureTime').textContent = timeLabel(last.at);
     showImage(last.image);
   } else {
-    currentImage = null;
-    if (currentImageUrl) URL.revokeObjectURL(currentImageUrl);
-    currentImageUrl = '';
-    $('captureImage').hidden = true;
-    $('captureEmpty').hidden = false;
+    clearCaptureImage();
     $('lastResult').textContent = 'CHƯA CÓ KẾT QUẢ';
     $('lastResult').className = 'result-chip neutral';
     $('lastReason').textContent = offline ? 'Pi ngoại tuyến' : 'Đang chờ hộp đầu tiên';
@@ -562,6 +583,7 @@ $('createRun').addEventListener('click', async () => {
       body: JSON.stringify({ name })
     });
     const result = await response.json();
+    clearCaptureImage();
     activeRun = result.run;
     activeRunId = result.run.id;
     selectedRun = 'current';

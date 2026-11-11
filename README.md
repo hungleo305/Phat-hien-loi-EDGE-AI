@@ -13,6 +13,8 @@ Kiểm tra AI: `python 03_Inference_Pi/runtime/self_check.py --backend ncnn`.
 Các tệp Python ở gốc 03_Inference_Pi là bản trình bày mã; đường kiểm thử chuẩn là runtime.
 Đây là kho mã nguồn, không phải thao tác triển khai lên Pi.
 
+Ngày 11/11/2026: đồng bộ dashboard theo phiên, xử lý xóa ảnh khi tạo phiên, cấu hình mặc định vận hành và shortcut desktop Pi. Xem `05_Dashboard/README.md`. Camera lưu phơi sáng 1100; Pi áp dụng PWM 180, LED 70, góc gạt 60°, chờ thu 350 ms khi đủ điều kiện dừng/trống.
+
 ESP32 chạy lại sau CAPTURED hợp lệ, lưu RESULT theo phiên/ID vào FIFO; chỉ dừng chờ tại cửa gạt nếu chưa có kết quả. Chưa nghiệm thu đầy đủ việc gạt hộp và vận hành dài hạn.
 
 ## Đối chứng xử lý ảnh

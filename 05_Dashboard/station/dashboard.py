@@ -98,6 +98,7 @@ class Dashboard:
         self.device_at = 0.0
         self.station = {'ready': False, 'camera': False, 'fault': None,
                         'busy': False, 'pending': False, 'queue': 0}
+        self.run_box_count = 0
         self.counts = Counter()
         self.recent = deque(maxlen=20)
         self._restore_active_run()
@@ -197,6 +198,8 @@ class Dashboard:
                'image': f'/api/image/{image_folder}/{stem}_result.jpg',
                'at': time.time()}
         with self.lock:
+            self.run_box_count += 1
+            row['run_number'] = self.run_box_count
             if packet.get('delivered'):
                 self.counts[packet.get('result')] += 1
             self.recent.appendleft(row)
@@ -261,6 +264,7 @@ class Dashboard:
         if record is None:
             return
         detail = self._named_run_detail(record)
+        self.run_box_count = detail['count']
         for row in detail['results'][:20]:
             self.recent.append(row)
         for row in detail['results']:
@@ -286,6 +290,7 @@ class Dashboard:
             self.named_runs.append(record)
             self._save_named_runs()
         with self.lock:
+            self.run_box_count = 0
             self.counts.clear()
             self.recent.clear()
         return self._named_run_detail(record), None
@@ -367,6 +372,8 @@ class Dashboard:
     def _named_run_detail(self, record, archives=None):
         archives = self._read_archived_runs() if archives is None else archives
         rows = self._rows_in_interval(archives, record['started_at'], record['ended_at'])
+        rows = [{**row, 'run_number': index}
+                for index, row in enumerate(rows, 1)]
         summary = self._summary(record['id'], record['name'], rows,
                                 record['started_at'], record['ended_at'],
                                 record['ended_at'] is None)
@@ -428,7 +435,7 @@ class Dashboard:
             content_type = 'application/json; charset=utf-8'
         else:
             output = io.StringIO(newline='')
-            fields = ['ten_phien', 'ma_phien', 'id_hop', 'session_esp32', 'box_id',
+            fields = ['ten_phien', 'ma_phien', 'stt_trong_phien', 'id_hop', 'session_esp32', 'box_id',
                       'ket_qua', 'da_gui_esp', 'ly_do',
                       'capture_ms', 'ai_ms', 'capture_to_result_ms', 'thoi_gian', 'anh']
             writer = csv.DictWriter(output, fieldnames=fields)
@@ -436,6 +443,7 @@ class Dashboard:
             for row in reversed(detail['results']):
                 writer.writerow({
                     'ten_phien': detail['name'], 'ma_phien': detail['id'],
+                    'stt_trong_phien': row.get('run_number', ''),
                     'id_hop': row['id'], 'session_esp32': row['session'],
                     'box_id': row['box_id'],
                     'ket_qua': row.get('result') or '', 'da_gui_esp': row['delivered'],
@@ -482,6 +490,7 @@ class Dashboard:
             return {'station': dict(self.station), 'device': dict(device) if device else None,
                     'local_trust': self.local_trust,
                     'active_run': active_run,
+                    'run_box_count': self.run_box_count,
                     'counts': {x: self.counts[x] for x in ('PASS', 'DEFECT', 'ERROR')},
                     'recent': list(self.recent),
                     'operations': list(self.operations.values())[-12:],

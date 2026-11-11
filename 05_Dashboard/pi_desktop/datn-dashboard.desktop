@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Dashboard DATN
+Comment=Mở dashboard kiểm tra và phân loại hộp
+Exec=/home/cmh/Pi4_EdgeAI/open_dashboard.sh
+Icon=applications-engineering
+Terminal=false
+Categories=Utility;
+StartupNotify=false
