@@ -1,0 +1,325 @@
+{
+  "backend": "ncnn",
+  "runtime": "/home/cmh/Pi4_EdgeAI/runs/closed_set_trial_20261030/model_runtime_closed_20261030",
+  "images": 466,
+  "correct": 466,
+  "warmup_ms": 1440.8,
+  "ai_ms_mean": 889.1,
+  "ai_ms_median": 720.0,
+  "ai_ms_max": 1603.2,
+  "decisions": {
+    "PASS": 189,
+    "DEFECT": 277
+  },
+  "by_group": {
+    "camera_sessions_141/20261028_201856_DEFECT_01_DEFECT": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "DEFECT": 10
+      }
+    },
+    "camera_sessions_141/20261028_202120_DEFECT_02_DEFECT": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "DEFECT": 10
+      }
+    },
+    "camera_sessions_141/20261028_202242_DEFECT_03_DEFECT": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "DEFECT": 10
+      }
+    },
+    "camera_sessions_141/20261028_202352_DEFECT_04_DEFECT": {
+      "images": 12,
+      "correct": 12,
+      "decisions": {
+        "DEFECT": 12
+      }
+    },
+    "camera_sessions_141/20261028_202514_DEFECT_05_DEFECT": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "DEFECT": 10
+      }
+    },
+    "camera_sessions_141/20261028_202953_PASS_TEST_01_PASS": {
+      "images": 14,
+      "correct": 14,
+      "decisions": {
+        "PASS": 14
+      }
+    },
+    "camera_sessions_141/20261028_203121_PASS_TEST_02_PASS": {
+      "images": 16,
+      "correct": 16,
+      "decisions": {
+        "PASS": 16
+      }
+    },
+    "camera_sessions_141/20261028_203425_PASS_TEST_03_PASS": {
+      "images": 14,
+      "correct": 14,
+      "decisions": {
+        "PASS": 14
+      }
+    },
+    "camera_sessions_141/20261028_203603_PASS_TEST_04_PASS": {
+      "images": 15,
+      "correct": 15,
+      "decisions": {
+        "PASS": 15
+      }
+    },
+    "camera_sessions_141/20261028_203744_PASS_TEST_05_PASS": {
+      "images": 15,
+      "correct": 15,
+      "decisions": {
+        "PASS": 15
+      }
+    },
+    "camera_sessions_141/20261028_204041_PASS_TEST_06_PASS": {
+      "images": 15,
+      "correct": 15,
+      "decisions": {
+        "PASS": 15
+      }
+    },
+    "original_245/BOX01": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "PASS": 10
+      }
+    },
+    "original_245/BOX02": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "PASS": 10
+      }
+    },
+    "original_245/BOX03": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "DEFECT": 10
+      }
+    },
+    "original_245/BOX04": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "DEFECT": 10
+      }
+    },
+    "original_245/BOX05": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "DEFECT": 10
+      }
+    },
+    "original_245/BOX06": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "DEFECT": 10
+      }
+    },
+    "original_245/BOX07": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "DEFECT": 10
+      }
+    },
+    "original_245/BOX08": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "DEFECT": 10
+      }
+    },
+    "original_245/BOX09": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "DEFECT": 10
+      }
+    },
+    "original_245/BOX10": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "DEFECT": 10
+      }
+    },
+    "original_245/BOX11": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "DEFECT": 10
+      }
+    },
+    "original_245/BOX12": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "DEFECT": 10
+      }
+    },
+    "original_245/BOX13": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "DEFECT": 10
+      }
+    },
+    "original_245/BOX14": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "DEFECT": 10
+      }
+    },
+    "original_245/BOX15": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "DEFECT": 10
+      }
+    },
+    "original_245/BOX16": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "DEFECT": 10
+      }
+    },
+    "original_245/BOX17": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "DEFECT": 10
+      }
+    },
+    "original_245/BOX18": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "DEFECT": 10
+      }
+    },
+    "original_245/BOX19": {
+      "images": 5,
+      "correct": 5,
+      "decisions": {
+        "DEFECT": 5
+      }
+    },
+    "original_245/PASS09": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "PASS": 10
+      }
+    },
+    "original_245/PASS10": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "PASS": 10
+      }
+    },
+    "original_245/PASS11": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "PASS": 10
+      }
+    },
+    "original_245/PASS12": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "PASS": 10
+      }
+    },
+    "original_245/PASS13": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "PASS": 10
+      }
+    },
+    "original_245/PASS14": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "PASS": 10
+      }
+    },
+    "pi_regression_80/DEFECT_BOX_01": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "DEFECT": 10
+      }
+    },
+    "pi_regression_80/DEFECT_BOX_02": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "DEFECT": 10
+      }
+    },
+    "pi_regression_80/DEFECT_BOX_03": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "DEFECT": 10
+      }
+    },
+    "pi_regression_80/DEFECT_BOX_04": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "DEFECT": 10
+      }
+    },
+    "pi_regression_80/DEFECT_BOX_05": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "DEFECT": 10
+      }
+    },
+    "pi_regression_80/DEFECT_BOX_06": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "DEFECT": 10
+      }
+    },
+    "pi_regression_80/PASS_KIEMTHU01": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "PASS": 10
+      }
+    },
+    "pi_regression_80/PASS_KIEMTHU02": {
+      "images": 10,
+      "correct": 10,
+      "decisions": {
+        "PASS": 10
+      }
+    }
+  },
+  "measurement": "offline AI only; no CAPTURE-to-RESULT, camera, dashboard or FIFO timing"
+}

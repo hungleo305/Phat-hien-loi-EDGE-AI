@@ -1,0 +1,31 @@
+{
+  "train": {
+    "old_train": {
+      "images": 248,
+      "surface_regions": 378,
+      "negative_images": 60
+    },
+    "old_valid": {
+      "images": 71,
+      "surface_regions": 89,
+      "negative_images": 19
+    },
+    "old_test": {
+      "images": 35,
+      "surface_regions": 52,
+      "negative_images": 12
+    },
+    "new_v4_train": {
+      "images": 205,
+      "surface_regions": 147,
+      "negative_images": 95
+    }
+  },
+  "valid": {
+    "new_v4_valid": {
+      "images": 40,
+      "surface_regions": 100,
+      "negative_images": 10
+    }
+  }
+}

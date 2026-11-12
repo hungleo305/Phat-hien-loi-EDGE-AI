@@ -1,0 +1,12 @@
+{
+  "model": "F:\\DATN\\Cong_cu_phat_trien\\outputs\\newlabel_v4_20261028\\training\\whole_balanced_finetune_640\\weights\\best.pt",
+  "pretrained": "F:\\DATN\\Cong_cu_phat_trien\\outputs\\newlabel_v2_20261028\\training\\v2_yolov8n_rotation_640\\weights\\best.pt",
+  "dataset": "F:\\DATN\\Cong_cu_phat_trien\\work\\newlabel_v4_20261028\\dataset_detection_balanced\\data.yaml",
+  "test": {
+    "metrics/precision(B)": 0.6504504172170421,
+    "metrics/recall(B)": 0.7859796286231381,
+    "metrics/mAP50(B)": 0.7264919938755504,
+    "metrics/mAP50-95(B)": 0.5601352813449206,
+    "fitness": 0.5767709525979836
+  }
+}

@@ -1,0 +1,217 @@
+{
+  "splits": {
+    "train": {
+      "images": 205,
+      "class_1": 50,
+      "class_0": 155,
+      "class_2": 147,
+      "dimensions": {
+        "1280x1280": 205
+      }
+    },
+    "valid": {
+      "images": 40,
+      "class_0": 30,
+      "class_2": 100,
+      "class_1": 10,
+      "dimensions": {
+        "1280x1280": 40
+      }
+    },
+    "test": {
+      "images": 50,
+      "class_0": 30,
+      "class_2": 41,
+      "class_1": 20,
+      "dimensions": {
+        "1280x1280": 50
+      }
+    }
+  },
+  "physical_groups": {
+    "BOX01": {
+      "images": 10,
+      "visible_defect": 0,
+      "split_train": 10
+    },
+    "BOX02": {
+      "images": 10,
+      "visible_defect": 0,
+      "split_train": 10
+    },
+    "BOX03": {
+      "images": 10,
+      "visible_defect": 10,
+      "split_train": 10
+    },
+    "BOX04": {
+      "images": 10,
+      "visible_defect": 16,
+      "split_train": 10
+    },
+    "BOX05": {
+      "images": 10,
+      "visible_defect": 20,
+      "split_train": 10
+    },
+    "BOX06": {
+      "images": 10,
+      "visible_defect": 10,
+      "split_train": 10
+    },
+    "BOX07": {
+      "images": 10,
+      "visible_defect": 40,
+      "split_valid": 10
+    },
+    "BOX08": {
+      "images": 10,
+      "visible_defect": 10,
+      "split_test": 10
+    },
+    "BOX09": {
+      "images": 10,
+      "visible_defect": 0,
+      "split_train": 10
+    },
+    "BOX10": {
+      "images": 10,
+      "visible_defect": 20,
+      "split_train": 10
+    },
+    "BOX11": {
+      "images": 10,
+      "visible_defect": 10,
+      "split_train": 10
+    },
+    "BOX12": {
+      "images": 10,
+      "visible_defect": 40,
+      "split_valid": 10
+    },
+    "BOX13": {
+      "images": 10,
+      "visible_defect": 10,
+      "split_test": 10
+    },
+    "BOX14": {
+      "images": 10,
+      "visible_defect": 0,
+      "split_train": 10
+    },
+    "BOX15": {
+      "images": 10,
+      "visible_defect": 10,
+      "split_train": 10
+    },
+    "BOX16": {
+      "images": 10,
+      "visible_defect": 11,
+      "split_train": 10
+    },
+    "BOX17": {
+      "images": 10,
+      "visible_defect": 20,
+      "split_valid": 10
+    },
+    "BOX18": {
+      "images": 10,
+      "visible_defect": 21,
+      "split_test": 10
+    },
+    "BOX19": {
+      "images": 5,
+      "visible_defect": 0,
+      "split_train": 5
+    },
+    "NEW_BOX1": {
+      "images": 10,
+      "visible_defect": 0,
+      "split_train": 10
+    },
+    "NEW_BOX2": {
+      "images": 10,
+      "visible_defect": 13,
+      "split_train": 10,
+      "visible_bbox_area_sum_ppm": 420467
+    },
+    "NEW_BOX3": {
+      "images": 10,
+      "visible_defect": 17,
+      "split_train": 10,
+      "visible_bbox_area_sum_ppm": 75675
+    },
+    "NEW_BOX4": {
+      "images": 10,
+      "visible_defect": 0,
+      "split_train": 10
+    },
+    "NEW_BOX5": {
+      "images": 10,
+      "visible_defect": 10,
+      "split_train": 10,
+      "visible_bbox_area_sum_ppm": 22732
+    },
+    "PASS09": {
+      "images": 10,
+      "visible_defect": 0,
+      "split_train": 10
+    },
+    "PASS10": {
+      "images": 10,
+      "visible_defect": 0,
+      "split_train": 10
+    },
+    "PASS11": {
+      "images": 10,
+      "visible_defect": 0,
+      "split_train": 10
+    },
+    "PASS12": {
+      "images": 10,
+      "visible_defect": 0,
+      "split_valid": 10
+    },
+    "PASS13": {
+      "images": 10,
+      "visible_defect": 0,
+      "split_test": 10
+    },
+    "PASS14": {
+      "images": 10,
+      "visible_defect": 0,
+      "split_test": 10
+    }
+  },
+  "new_train_groups": {
+    "NEW_BOX1": {
+      "images": 10,
+      "visible_defect": 0,
+      "split_train": 10
+    },
+    "NEW_BOX2": {
+      "images": 10,
+      "visible_defect": 13,
+      "split_train": 10,
+      "visible_bbox_area_sum_ppm": 420467
+    },
+    "NEW_BOX3": {
+      "images": 10,
+      "visible_defect": 17,
+      "split_train": 10,
+      "visible_bbox_area_sum_ppm": 75675
+    },
+    "NEW_BOX4": {
+      "images": 10,
+      "visible_defect": 0,
+      "split_train": 10
+    },
+    "NEW_BOX5": {
+      "images": 10,
+      "visible_defect": 10,
+      "split_train": 10,
+      "visible_bbox_area_sum_ppm": 22732
+    }
+  },
+  "issues": []
+}

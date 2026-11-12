@@ -1,0 +1,4 @@
+run,records,PASS,DEFECT,ERROR,request_to_result_mean_ms
+trial4,28,7,21,0,1573.896
+trial5_repeat,28,7,21,0,1601.771
+trial6,30,7,23,0,1423.869

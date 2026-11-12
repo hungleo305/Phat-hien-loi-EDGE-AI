@@ -1,0 +1,23 @@
+{
+  "fp32": {
+    "images": 466,
+    "same_as_truth": 466,
+    "same_as_old_pi": 466,
+    "mean_ms": 1071.8,
+    "median_ms": 802.9,
+    "p95_ms": 1695.8,
+    "max_ms": 1918.6
+  },
+  "fp16": {
+    "images": 466,
+    "same_as_truth": 466,
+    "same_as_old_pi": 466,
+    "mean_ms": 1096.0,
+    "median_ms": 811.8,
+    "p95_ms": 1732.7,
+    "max_ms": 1918.8
+  },
+  "same_decision": 466,
+  "changed_images": [],
+  "elapsed_s": 1040.2
+}

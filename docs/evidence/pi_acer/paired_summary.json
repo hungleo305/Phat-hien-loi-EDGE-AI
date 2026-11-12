@@ -1,0 +1,390 @@
+{
+  "ratio_of_means": 6.223019956932172,
+  "unique_images": 11,
+  "sessions": 9,
+  "repeats": 3,
+  "matched_decisions": 33,
+  "summaries": {
+    "pi": {
+      "platform": "Linux-6.18.50+rpt-rpi-v8-aarch64-with-glibc2.41",
+      "python": "3.13.5 (main, Aug 10 2026, 12:06:59) [GCC 14.2.0]",
+      "processor": "",
+      "cpu_count": 4,
+      "runtime": "/home/cmh/Pi4_EdgeAI/current/runtime",
+      "opencv": "4.11.0",
+      "versions": {
+        "ultralytics": "8.3.228",
+        "ncnn": "1.0.20260526",
+        "torch": "2.7.1+cpu",
+        "numpy": "2.2.6",
+        "psutil": "7.2.2"
+      },
+      "runtime_hashes": {
+        "integrity.py": "5e1bbcc67e214f056cd144063e07529f569b2d867119c6d992a5ae8f55b6b2e1",
+        "manifest.json": "a9fb3ff0c4a9f68a092b74e0eb77210eb894f1bbaf3dad26fe0b40f6f38e5a83",
+        "README.md": "5ec5c20273d16943b71f35ed3a2c60e3ea82dcd18d8a0df3af70f3e5cea0639e",
+        "requirements_pi.txt": "ea26e2f84a50fd7c486f4c441e1b60218c96ecfd66e698d1459c2a5123a4475f",
+        "self_check.py": "21b2a44f3afa1c10fce839ce0afe14fc1dc8908e7eb4f253c440e12c32c16d3f",
+        "assets/approved_label.png": "0fb669cacdd9cd55c1e91089086d4d23d80500ef59c87fabdbca5eda45fcf452",
+        "assets/tem_QC_FAILED_2025_cropped.png": "18f21be840dd68d7ed045e5b1b73faf16dfababb1e12ced62d18283f0f8ef7c8",
+        "assets/tem_QC_FAILED_2026_cropped.png": "79ab02d139fe097866cdaf72068a264a347b4cc8a80c7aee9f615cf953e497ed",
+        "assets/tem_QC_PASSED_2025_cropped.png": "315e01105baf560fd16ff0668c19e058b53712e535034bee10d4e7c60cfd99bf",
+        "config/app.json": "2517f4994f404c7796a0bf603c438b5334094047318c2fb9d332d561f20e642a",
+        "models/surface_finetuned.pt": "4539b799ed3990c6b5554b847cdfd66be7f4fb7732ceae386a88a7f4b45ec447",
+        "models/whole_balanced.pt": "cee48c449020ad81f3e1bc952bf1dacd95c4d067bec1bf42fb3ca08e58c63848",
+        "models/surface_finetuned_ncnn_model/metadata.yaml": "c195f630b6e1907049397887348ac0278ab312a3818dc087f21d87d57feb18fc",
+        "models/surface_finetuned_ncnn_model/model.ncnn.bin": "b2deae97ac793d697bac3e7ade86116b28c5c77f213339a722dba4981db1c39e",
+        "models/surface_finetuned_ncnn_model/model.ncnn.param": "5c668ca521e6b38381556525947353f99562ff9350427ae311b25020178883c7",
+        "models/surface_finetuned_ncnn_model/model_ncnn.py": "005e320ab8cd8e6a41f3003fc02882e731ef64e2e623b498c565135516a4e547",
+        "models/whole_balanced_ncnn_model/metadata.yaml": "f14b596a675a04cf3e5e313ea61e11049932ab007337e98d157ed0101c27b40b",
+        "models/whole_balanced_ncnn_model/model.ncnn.bin": "a4c583ff79f8c14d35bd87db05e2745d53a11137a678c646eca9af8311faf20c",
+        "models/whole_balanced_ncnn_model/model.ncnn.param": "015a3a61d6b5ef8d2bcd62dcfde96677db19a17b60f97684ba5e5a08e06f0153",
+        "models/whole_balanced_ncnn_model/model_ncnn.py": "feaf45edec20dfaa5355b03f1e80832a43986777e73b43895aa8957bff230314",
+        "samples/added_marks.jpg": "52fb76580ce986cd12d6e0f6c97b173ce43feda37eeeeb891ebd355e270e03ea",
+        "samples/pass.jpg": "49608c49b08a8d80870e98f0dea6e77dd4339afffe2e044deb3630c6b90c4798",
+        "samples/physical_defect.jpg": "386f67721040d13a6f28276aaa1152a759d01dd4e6c6faba8d22e47bf2e5d5c6",
+        "samples/qc_failed.jpg": "05e03e449ec341de038425239edc1daf773e7210ea166cecae3a5ae9e787c49b",
+        "samples/review.jpg": "fafba53650ddcde9fa52760b62368d4f75a54c23d81467cb66cfd4d0fa092676",
+        "src/base_pipeline.py": "1f0a7445c34408118389f5dfd94fdc9bdcaba51ae411ff5b624d07dd3a0004e3",
+        "src/camera_controls.py": "ad207107b0ecc2c79060682e8423a73f050bc799a773cf9b71b321bdb7d0365c",
+        "src/current_pipeline.py": "3723fdb42311c6925fbd6662d6679d0e06b5a1742f91e95f222591acae552f15",
+        "src/guard_logic.py": "6bed987adc7276074f77024ef912e6b0b825f5a92afddd0f252ae2f08266fb22",
+        "src/label_integrity.py": "235869b045184e7530e65d06d8b7b195262c47926dd3a1f066cf5e18895a6af8",
+        "src/label_verifier.py": "d269d2b94f9ae0d0010a2b6bdb48cfaef3bea59488ccaebcfb45e7b749a18af4",
+        "src/pi_camera.py": "3c874ead322947b1b6f3a04ce8c71ff6040620d95fe56dc545ec999848965a39"
+      },
+      "dataset_sha256": "b1cd4632102cf750f5e874e579b4e41e5f269715df59c332ee9f592166e746bb",
+      "before": {
+        "time": 1794283440.2370195,
+        "vcgencmd get_throttled": "throttled=0x0",
+        "vcgencmd measure_temp": "temp=38.4'C",
+        "vcgencmd measure_clock arm": "frequency(48)=2000478464",
+        "station": {
+          "ready": false,
+          "camera": false,
+          "fault": null,
+          "busy": false,
+          "pending": false,
+          "queue": 0,
+          "ai_ready": true
+        },
+        "device": {
+          "state": "STOPPED",
+          "motor": false,
+          "queue": 0,
+          "fault": false
+        },
+        "preview_fps": 22.108715974482525
+      },
+      "whole_backend": {
+        "type": "AutoBackend",
+        "device": "cpu",
+        "num_threads": 4,
+        "use_vulkan_compute": false
+      },
+      "surface_backend": {
+        "type": "AutoBackend",
+        "device": "cpu",
+        "num_threads": 4,
+        "use_vulkan_compute": false
+      },
+      "after": {
+        "time": 1794283485.8034751,
+        "vcgencmd get_throttled": "throttled=0x0",
+        "vcgencmd measure_temp": "temp=49.1'C",
+        "vcgencmd measure_clock arm": "frequency(48)=2000531200",
+        "station": {
+          "ready": false,
+          "camera": false,
+          "fault": null,
+          "busy": false,
+          "pending": false,
+          "queue": 0,
+          "ai_ready": true
+        },
+        "device": {
+          "state": "STOPPED",
+          "motor": false,
+          "queue": 0,
+          "fault": false
+        },
+        "preview_fps": 22.108715974482525
+      },
+      "stats": {
+        "n": 33,
+        "mean": 984.4122479393621,
+        "median": 651.687045000017,
+        "p95": 1756.163500999719,
+        "minimum": 405.73073299992757,
+        "maximum": 1756.664475999969
+      },
+      "by_truth": {
+        "PASS": {
+          "n": 15,
+          "mean": 1621.688969599927,
+          "median": 1545.1259800001935,
+          "p95": 1756.664475999969,
+          "minimum": 1519.9232939999092,
+          "maximum": 1756.664475999969
+        },
+        "DEFECT": {
+          "n": 18,
+          "mean": 453.34831322222476,
+          "median": 416.09739449995686,
+          "p95": 657.2725230003016,
+          "minimum": 405.73073299992757,
+          "maximum": 657.2725230003016
+        }
+      },
+      "unique_images": 11,
+      "repeats": 3,
+      "opencv_threads": 1,
+      "config": {
+        "schema": 1,
+        "release": "model_runtime_closed_20261030",
+        "whole_backend": "ncnn",
+        "whole_imgsz": 640,
+        "surface_imgsz": 960,
+        "whole_threshold": 0.7,
+        "surface_threshold": 0.05,
+        "surface_max_area_ratio": 0.2,
+        "opencv_threads": 1,
+        "torch_threads": 3,
+        "review_protocol_result": "ERROR"
+      }
+    },
+    "acer": {
+      "platform": "Windows-10-10.0.26300-SP0",
+      "python": "3.10.20 | packaged by Anaconda, Inc. | (main, Jun 11 2026, 15:13:20) [MSC v.1942 64 bit (AMD64)]",
+      "processor": "Intel64 Family 6 Model 141 Stepping 1, GenuineIntel",
+      "cpu_count": 12,
+      "runtime": "F:\\DATN\\Cong_cu_phat_trien\\work\\pi_production_20261101\\runtime",
+      "opencv": "4.12.0",
+      "versions": {
+        "ultralytics": "8.3.228",
+        "ncnn": "1.0.20260526",
+        "torch": "2.7.1+cu118",
+        "numpy": "2.2.6",
+        "psutil": "7.2.2"
+      },
+      "runtime_hashes": {
+        "integrity.py": "5e1bbcc67e214f056cd144063e07529f569b2d867119c6d992a5ae8f55b6b2e1",
+        "manifest.json": "a9fb3ff0c4a9f68a092b74e0eb77210eb894f1bbaf3dad26fe0b40f6f38e5a83",
+        "README.md": "5ec5c20273d16943b71f35ed3a2c60e3ea82dcd18d8a0df3af70f3e5cea0639e",
+        "requirements_pi.txt": "ea26e2f84a50fd7c486f4c441e1b60218c96ecfd66e698d1459c2a5123a4475f",
+        "self_check.py": "21b2a44f3afa1c10fce839ce0afe14fc1dc8908e7eb4f253c440e12c32c16d3f",
+        "assets/approved_label.png": "0fb669cacdd9cd55c1e91089086d4d23d80500ef59c87fabdbca5eda45fcf452",
+        "assets/tem_QC_FAILED_2025_cropped.png": "18f21be840dd68d7ed045e5b1b73faf16dfababb1e12ced62d18283f0f8ef7c8",
+        "assets/tem_QC_FAILED_2026_cropped.png": "79ab02d139fe097866cdaf72068a264a347b4cc8a80c7aee9f615cf953e497ed",
+        "assets/tem_QC_PASSED_2025_cropped.png": "315e01105baf560fd16ff0668c19e058b53712e535034bee10d4e7c60cfd99bf",
+        "config/app.json": "2517f4994f404c7796a0bf603c438b5334094047318c2fb9d332d561f20e642a",
+        "models/surface_finetuned.pt": "4539b799ed3990c6b5554b847cdfd66be7f4fb7732ceae386a88a7f4b45ec447",
+        "models/whole_balanced.pt": "cee48c449020ad81f3e1bc952bf1dacd95c4d067bec1bf42fb3ca08e58c63848",
+        "models/surface_finetuned_ncnn_model/metadata.yaml": "c195f630b6e1907049397887348ac0278ab312a3818dc087f21d87d57feb18fc",
+        "models/surface_finetuned_ncnn_model/model.ncnn.bin": "b2deae97ac793d697bac3e7ade86116b28c5c77f213339a722dba4981db1c39e",
+        "models/surface_finetuned_ncnn_model/model.ncnn.param": "5c668ca521e6b38381556525947353f99562ff9350427ae311b25020178883c7",
+        "models/surface_finetuned_ncnn_model/model_ncnn.py": "005e320ab8cd8e6a41f3003fc02882e731ef64e2e623b498c565135516a4e547",
+        "models/whole_balanced_ncnn_model/metadata.yaml": "f14b596a675a04cf3e5e313ea61e11049932ab007337e98d157ed0101c27b40b",
+        "models/whole_balanced_ncnn_model/model.ncnn.bin": "a4c583ff79f8c14d35bd87db05e2745d53a11137a678c646eca9af8311faf20c",
+        "models/whole_balanced_ncnn_model/model.ncnn.param": "015a3a61d6b5ef8d2bcd62dcfde96677db19a17b60f97684ba5e5a08e06f0153",
+        "models/whole_balanced_ncnn_model/model_ncnn.py": "feaf45edec20dfaa5355b03f1e80832a43986777e73b43895aa8957bff230314",
+        "samples/added_marks.jpg": "52fb76580ce986cd12d6e0f6c97b173ce43feda37eeeeb891ebd355e270e03ea",
+        "samples/pass.jpg": "49608c49b08a8d80870e98f0dea6e77dd4339afffe2e044deb3630c6b90c4798",
+        "samples/physical_defect.jpg": "386f67721040d13a6f28276aaa1152a759d01dd4e6c6faba8d22e47bf2e5d5c6",
+        "samples/qc_failed.jpg": "05e03e449ec341de038425239edc1daf773e7210ea166cecae3a5ae9e787c49b",
+        "samples/review.jpg": "fafba53650ddcde9fa52760b62368d4f75a54c23d81467cb66cfd4d0fa092676",
+        "src/base_pipeline.py": "1f0a7445c34408118389f5dfd94fdc9bdcaba51ae411ff5b624d07dd3a0004e3",
+        "src/camera_controls.py": "ad207107b0ecc2c79060682e8423a73f050bc799a773cf9b71b321bdb7d0365c",
+        "src/current_pipeline.py": "3723fdb42311c6925fbd6662d6679d0e06b5a1742f91e95f222591acae552f15",
+        "src/guard_logic.py": "6bed987adc7276074f77024ef912e6b0b825f5a92afddd0f252ae2f08266fb22",
+        "src/label_integrity.py": "235869b045184e7530e65d06d8b7b195262c47926dd3a1f066cf5e18895a6af8",
+        "src/label_verifier.py": "d269d2b94f9ae0d0010a2b6bdb48cfaef3bea59488ccaebcfb45e7b749a18af4",
+        "src/pi_camera.py": "3c874ead322947b1b6f3a04ce8c71ff6040620d95fe56dc545ec999848965a39"
+      },
+      "dataset_sha256": "b1cd4632102cf750f5e874e579b4e41e5f269715df59c332ee9f592166e746bb",
+      "before": {
+        "time": 1794283398.515685
+      },
+      "whole_backend": {
+        "type": "AutoBackend",
+        "device": "cpu",
+        "num_threads": 6,
+        "use_vulkan_compute": false
+      },
+      "surface_backend": {
+        "type": "AutoBackend",
+        "device": "cpu",
+        "num_threads": 6,
+        "use_vulkan_compute": false
+      },
+      "after": {
+        "time": 1794283406.7626953
+      },
+      "stats": {
+        "n": 33,
+        "mean": 158.18883030300586,
+        "median": 119.770399999652,
+        "p95": 299.1679000001568,
+        "minimum": 51.51399999977002,
+        "maximum": 307.35249999997905
+      },
+      "by_truth": {
+        "PASS": {
+          "n": 15,
+          "mean": 268.9062466667262,
+          "median": 253.78820000014457,
+          "p95": 307.35249999997905,
+          "minimum": 237.07130000002508,
+          "maximum": 307.35249999997905
+        },
+        "DEFECT": {
+          "n": 18,
+          "mean": 65.92431666657224,
+          "median": 53.397900000163645,
+          "p95": 121.10129999973651,
+          "minimum": 51.51399999977002,
+          "maximum": 121.10129999973651
+        }
+      },
+      "unique_images": 11,
+      "repeats": 3,
+      "opencv_threads": 1,
+      "config": {
+        "schema": 1,
+        "release": "model_runtime_closed_20261030",
+        "whole_backend": "ncnn",
+        "whole_imgsz": 640,
+        "surface_imgsz": 960,
+        "whole_threshold": 0.7,
+        "surface_threshold": 0.05,
+        "surface_max_area_ratio": 0.2,
+        "opencv_threads": 1,
+        "torch_threads": 3,
+        "review_protocol_result": "ERROR"
+      }
+    }
+  },
+  "per_image": [
+    {
+      "sample_id": "01_DEFECT_BOX_TEST_01",
+      "session": "20261110_105422_BOX_TEST_01_DEFECT",
+      "truth": "DEFECT",
+      "pi_decision": "DEFECT",
+      "acer_decision": "DEFECT",
+      "pi_mean_ms": 653.4026323333819,
+      "acer_mean_ms": 118.77666666638713,
+      "pi_reason": "QC/year mismatch",
+      "acer_reason": "QC/year mismatch"
+    },
+    {
+      "sample_id": "02_DEFECT_BOX_TEST_02",
+      "session": "20261110_105653_BOX_TEST_02_DEFECT",
+      "truth": "DEFECT",
+      "pi_decision": "DEFECT",
+      "acer_decision": "DEFECT",
+      "pi_mean_ms": 417.0698653335118,
+      "acer_mean_ms": 59.32486666673261,
+      "pi_reason": "whole-box model",
+      "acer_reason": "whole-box model"
+    },
+    {
+      "sample_id": "03_DEFECT_BOX_TEST_03",
+      "session": "20261110_105724_BOX_TEST_03_DEFECT",
+      "truth": "DEFECT",
+      "pi_decision": "DEFECT",
+      "acer_decision": "DEFECT",
+      "pi_mean_ms": 411.0241966667066,
+      "acer_mean_ms": 53.58333333333576,
+      "pi_reason": "whole-box model",
+      "acer_reason": "whole-box model"
+    },
+    {
+      "sample_id": "04_DEFECT_BOX_TEST_04",
+      "session": "20261110_105801_BOX_TEST_04_DEFECT",
+      "truth": "DEFECT",
+      "pi_decision": "DEFECT",
+      "acer_decision": "DEFECT",
+      "pi_mean_ms": 413.05778533327003,
+      "acer_mean_ms": 53.182566666691855,
+      "pi_reason": "whole-box model",
+      "acer_reason": "whole-box model"
+    },
+    {
+      "sample_id": "05_DEFECT_BOX_TEST_05",
+      "session": "20261110_105841_BOX_TEST_05_DEFECT",
+      "truth": "DEFECT",
+      "pi_decision": "DEFECT",
+      "acer_decision": "DEFECT",
+      "pi_mean_ms": 409.83314499984164,
+      "acer_mean_ms": 53.16549999982575,
+      "pi_reason": "whole-box model",
+      "acer_reason": "whole-box model"
+    },
+    {
+      "sample_id": "06_DEFECT_BOX_TEST_06",
+      "session": "20261110_105926_BOX_TEST_06_DEFECT",
+      "truth": "DEFECT",
+      "pi_decision": "DEFECT",
+      "acer_decision": "DEFECT",
+      "pi_mean_ms": 415.7022546666364,
+      "acer_mean_ms": 57.512966666460365,
+      "pi_reason": "whole-box model",
+      "acer_reason": "whole-box model"
+    },
+    {
+      "sample_id": "07_PASS_BOX_TEST_01",
+      "session": "20261110_105950_BOX_TEST_01_PASS",
+      "truth": "PASS",
+      "pi_decision": "PASS",
+      "acer_decision": "PASS",
+      "pi_mean_ms": 1525.7416943331918,
+      "acer_mean_ms": 245.91280000019347,
+      "pi_reason": "all active checks passed",
+      "acer_reason": "all active checks passed"
+    },
+    {
+      "sample_id": "08_PASS_BOX_TEST_02",
+      "session": "20261110_110022_BOX_TEST_02_PASS",
+      "truth": "PASS",
+      "pi_decision": "PASS",
+      "acer_decision": "PASS",
+      "pi_mean_ms": 1538.097781666541,
+      "acer_mean_ms": 252.86826666661,
+      "pi_reason": "all active checks passed",
+      "acer_reason": "all active checks passed"
+    },
+    {
+      "sample_id": "09_PASS_BOX_TEST_03",
+      "session": "20261110_110055_BOX_TEST_03_PASS",
+      "truth": "PASS",
+      "pi_decision": "PASS",
+      "acer_decision": "PASS",
+      "pi_mean_ms": 1750.7000593332123,
+      "acer_mean_ms": 297.8882000000643,
+      "pi_reason": "all active checks passed",
+      "acer_reason": "all active checks passed"
+    },
+    {
+      "sample_id": "10_PASS_BOX_TEST_03",
+      "session": "20261110_110055_BOX_TEST_03_PASS",
+      "truth": "PASS",
+      "pi_decision": "PASS",
+      "acer_decision": "PASS",
+      "pi_mean_ms": 1748.876991999926,
+      "acer_mean_ms": 301.0391000001012,
+      "pi_reason": "all active checks passed",
+      "acer_reason": "all active checks passed"
+    },
+    {
+      "sample_id": "11_PASS_BOX_TEST_03",
+      "session": "20261110_110055_BOX_TEST_03_PASS",
+      "truth": "PASS",
+      "pi_decision": "PASS",
+      "acer_decision": "PASS",
+      "pi_mean_ms": 1545.0283206667639,
+      "acer_mean_ms": 246.82286666666187,
+      "pi_reason": "all active checks passed",
+      "acer_reason": "all active checks passed"
+    }
+  ]
+}

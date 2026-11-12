@@ -1,0 +1,12 @@
+{
+  "model": "F:\\DATN\\Cong_cu_phat_trien\\outputs\\newlabel_v4_20261028\\training\\surface_finetune_960\\weights\\best.pt",
+  "pretrained": "F:\\DATN\\Cong_cu_phat_trien\\outputs\\newlabel_v2_20261028\\training\\v3_surface_combined_960\\weights\\best.pt",
+  "dataset": "F:\\DATN\\Cong_cu_phat_trien\\work\\newlabel_v4_20261028\\dataset_surface_combined\\data.yaml",
+  "validation": {
+    "metrics/precision(B)": 0.3976085658030394,
+    "metrics/recall(B)": 0.47,
+    "metrics/mAP50(B)": 0.39136855541368415,
+    "metrics/mAP50-95(B)": 0.16071318331707501,
+    "fitness": 0.18377872052673594
+  }
+}
