@@ -1,9 +1,11 @@
-# Lưu đồ và sơ đồ giải thích hệ thống
+# Sơ đồ kiến trúc và lưu đồ thuật toán trong báo cáo
 
-| Tên | Nội dung | Bản sửa được |
-|---|---|---|
-| esp32_chu_trinh_mot_hop | Chu trình chụp, nhận kết quả, FIFO và gạt; bản cập nhật 12/11 | drawio |
-| dau_noi_va_nguon | Nguồn Pi riêng 5,1 V; nhánh 24 V và bảng kết nối GPIO | svg |
-| so_sanh_cloud_edge | Vị trí xử lý trên đám mây và tại trạm, không gán số độ trễ suy đoán | svg |
+Thư mục này lưu trữ các sơ đồ nguyên lý, kiến trúc và lưu đồ thuật toán chính được sử dụng trong báo cáo đồ án tốt nghiệp. Mỗi sơ đồ đều có tệp ảnh `.png` (đúng bản nhúng trong báo cáo Word) đi kèm tệp nguồn `.drawio` hoặc `.svg` để chỉnh sửa khi cần.
 
-PNG dùng để chèn báo cáo; drawio/SVG là nguồn chỉnh sửa. Sơ đồ đấu nối trình bày các khối và chân tín hiệu, cần đối chiếu với tài liệu firmware khi đấu phần cứng.
+| Tên tệp | Hình tương ứng trong báo cáo | Nội dung thể hiện | Định dạng nguồn |
+|---|---|---|---|
+| [`so_sanh_cloud_edge.png`](so_sanh_cloud_edge.png) | **Hình 1.3** | So sánh kiến trúc xử lý tập trung trên đám mây (Cloud AI) và xử lý trực tiếp tại biên (Edge AI) | [`.svg`](so_sanh_cloud_edge.svg) |
+| [`dau_noi_va_nguon.png`](dau_noi_va_nguon.png) | **Hình 3.1** | Sơ đồ phân phối nguồn (nhánh 24 V DC, hạ áp 5 V, nguồn riêng 5,1 V cho Pi 4) và bảng kết nối chân GPIO/UART2 | [`.svg`](dau_noi_va_nguon.svg) |
+| [`pipeline_ai_chi_tiet.png`](pipeline_ai_chi_tiet.png) | **Hình 3.7** | Lưu đồ quyết định kiểm định hộp và tem theo cơ chế kết luận sớm (Tầng 1 toàn hộp -> Tầng 3 kiểm định tem -> Tầng 2 lỗi bề mặt) | [`.drawio`](pipeline_ai_chi_tiet.drawio) |
+| [`kiem_dinh_tem_chi_tiet.png`](kiem_dinh_tem_chi_tiet.png) | **Hình 3.9** | Lưu đồ chi tiết quy trình kiểm định tem nhãn (định vị ORB + Homography USAC_MAGSAC, kiểm tra chất lượng ảnh, đối chiếu 6 vùng NCC và kiểm tra hư hại) | [`.drawio`](kiem_dinh_tem_chi_tiet.drawio) |
+| [`esp32_chu_trinh_mot_hop.png`](esp32_chu_trinh_mot_hop.png) | **Hình 3.16** | Lưu đồ chu trình điều khiển và phân loại một hộp trên ESP32 (cảm biến chụp, hàng đợi FIFO, nhận `RESULT` và gạt hộp lỗi tại cửa phân loại) | [`.drawio`](esp32_chu_trinh_mot_hop.drawio) |

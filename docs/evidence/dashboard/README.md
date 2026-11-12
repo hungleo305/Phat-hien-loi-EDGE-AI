@@ -1,13 +1,20 @@
-# Dashboard đang sử dụng
+# Hồ sơ [2] — Giao diện Web Dashboard thực tế đang vận hành
 
-Các ảnh dưới đây chụp ngày 12/11/2026 từ giao diện laptop kết nối thật tới Pi và ESP32. Trạm ở trạng thái dừng; chỉ xem lịch sử và mở cài đặt, không chạy hộp mới để tạo dữ liệu minh họa.
+Thư mục này lưu trữ các ảnh chụp màn hình thực tế của giao diện **Web Dashboard** khi kết nối trực tiếp với trạm **Raspberry Pi 4** và **ESP32** (trình bày tại mục `3.4`, `Hình 3.17`–`3.19` trong báo cáo).
 
-| Ảnh | Nội dung |
-|---|---|
-| [dashboard_overview.jpg](dashboard_overview.jpg) | Trạng thái trạm và bộ đếm khi xem phiên lịch sử #6 |
-| [dashboard_settings.jpg](dashboard_settings.jpg) | Mức LED 70/255, PWM 180/255, góc đặt 60°, chờ thu 350 ms, phơi sáng camera 1100 |
-| [dashboard_history.jpg](dashboard_history.jpg) | Một phần lịch sử #6; ảnh camera trực tiếp và vùng kết quả của trạm hiện tại |
+---
 
-Khi mở phiên cũ, bộ đếm và bảng lịch sử phản ánh phiên đang xem; trạng thái thiết bị và camera vẫn là trạng thái hiện tại. Vì vậy bộ đếm lịch sử có thể khác số hộp của phiên thiết bị hiện hành.
+## 1. Danh mục hình ảnh minh chứng
 
-Mã nguồn: [giao diện](../../../05_Dashboard/), [chương trình trạm](../../../05_Dashboard/station/). Các ảnh là nguồn minh họa cho báo cáo, không phải phép đo độ trễ hiển thị. Khi chèn vào Word có thể cắt vùng hiển thị bằng định dạng ảnh mà không thay đổi ảnh gốc.
+| Tên tệp ảnh | Hình trong báo cáo | Nội dung hiển thị trên giao diện |
+|---|---|---|
+| [`dashboard_overview.jpg`](dashboard_overview.jpg) | **Hình 3.17** | Giao diện tổng quan của Dashboard: trạng thái kết nối Pi / Camera / AI / ESP32, chỉ báo cảm biến, bộ đếm phiên chạy (`Tổng 30`, `PASS 7`, `DEFECT 23` của phiên `#6`), khung hình camera trực tiếp và ảnh kết quả kiểm định. |
+| [`dashboard_settings.jpg`](dashboard_settings.jpg) | **Hình 3.18** | Cửa sổ cài đặt thông số vận hành: hiển thị đúng bộ thông số chuẩn đang áp dụng (`LIGHT = 70/255`, `SPEED = 180/255`, góc gạt `60°`, thời gian giữ gạt `350 ms`, phơi sáng camera `1100`). |
+| [`dashboard_history.jpg`](dashboard_history.jpg) | **Hình 3.19** | Bảng tra cứu lịch sử các lượt kiểm định trong phiên đã lưu kèm nút xuất dữ liệu ra tệp **CSV** / **JSON**. |
+
+---
+
+## 2. Liên kết tới mã nguồn giao diện
+
+- Mã nguồn giao diện và máy chủ điều phối: [`05_Dashboard/station/`](../../../05_Dashboard/station/README.md).
+- Hướng dẫn vận hành giao diện: [`docs/VAN_HANH.md`](../../VAN_HANH.md).

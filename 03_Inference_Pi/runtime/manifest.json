@@ -21,7 +21,7 @@
     "models/whole_balanced_ncnn_model/model.ncnn.bin": "a4c583ff79f8c14d35bd87db05e2745d53a11137a678c646eca9af8311faf20c",
     "models/whole_balanced_ncnn_model/model.ncnn.param": "015a3a61d6b5ef8d2bcd62dcfde96677db19a17b60f97684ba5e5a08e06f0153",
     "models/whole_balanced_ncnn_model/model_ncnn.py": "feaf45edec20dfaa5355b03f1e80832a43986777e73b43895aa8957bff230314",
-    "README.md": "56adbea79668e844299a5ac50ade7a1d7d543fee76c032136ba7ae8bf38ff39f",
+    "README.md": "abbd34ec73fe16d9bbefb0451e3a5ac6eaa455657f702573a76d095cec65ba74",
     "requirements_pi.txt": "ea26e2f84a50fd7c486f4c441e1b60218c96ecfd66e698d1459c2a5123a4475f",
     "samples/added_marks.jpg": "52fb76580ce986cd12d6e0f6c97b173ce43feda37eeeeb891ebd355e270e03ea",
     "samples/pass.jpg": "49608c49b08a8d80870e98f0dea6e77dd4339afffe2e044deb3630c6b90c4798",

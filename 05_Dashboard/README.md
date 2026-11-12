@@ -1,35 +1,52 @@
-# Trạm điều phối và dashboard
+# Phân hệ 05 — Phần mềm điều phối trạm và Web Dashboard
 
-Mã chạy duy nhất nằm trong `station/`. Trạm nhận CAPTURE từ ESP32, lấy ảnh, gọi runtime AI, gửi RESULT và cung cấp web dashboard. Không còn các bản HTML/JS/server sao chép tại gốc module.
+Thư mục này chứa phần mềm điều phối trung tâm trên Raspberry Pi 4 (**`station/`**), kết nối giữa Camera USB, tiến trình suy luận AI (`03_Inference_Pi/runtime`), cổng truyền thông UART2 tới ESP32 và giao diện điều khiển **Web Dashboard**.
 
-| Tệp trong station | Vai trò |
+---
+
+## 1. Cấu trúc phân hệ
+
+| Thành phần | Vai trò |
 |---|---|
-| `run_station.py` | Điều phối camera, tiến trình AI, UART và dashboard |
-| `station_protocol.py` | Đọc bản tin và giao dịch theo phiên/ID |
-| `dashboard.py` | HTTP API, MJPEG, lịch sử và xuất CSV/JSON |
-| `dashboard.html`, `dashboard.css`, `dashboard.js` | Giao diện trình duyệt |
-| `startup_defaults.py`, `station_defaults.json` | Áp dụng mặc định khi dừng/trống, chờ ACK và STATE |
-| `manifest.json` | Kiểm tra các tệp đồng bộ trong gói station |
+| [`station/run_station.py`](station/run_station.py) | Chương trình điều phối chính của trạm: quản lý luồng đọc camera, gọi hàm kiểm định AI, gửi/nhận bản tin UART2 và duy trì nhịp `HEARTBEAT`. |
+| [`station/station_protocol.py`](station/station_protocol.py) | Xử lý giao thức truyền thông nối tiếp với ESP32 theo phiên (`session`), số thứ tự lệnh (`seq`), mã hộp (`id`) và xác nhận `OPACK`. |
+| [`station/dashboard.py`](station/dashboard.py) | Máy chủ HTTP nội bộ cung cấp REST API (`/api/state`, `/api/command`, `/api/runs`...), luồng video trực tiếp **MJPEG** và xuất báo cáo **CSV / JSON**. |
+| [`station/dashboard.html`](station/dashboard.html), [`dashboard.css`](station/dashboard.css), [`dashboard.js`](station/dashboard.js) | Giao diện người dùng trên trình duyệt web: hiển thị trạng thái thiết bị, video trực tiếp, ảnh kết quả kiểm định, bộ đếm theo phiên và bảng lịch sử. |
+| [`station/startup_defaults.py`](station/startup_defaults.py), [`station_defaults.json`](station/station_defaults.json) | Cơ chế tự động áp dụng thông số chuẩn (`SPEED=180`, `LIGHT=70`, `SERVO_ANGLE=60`, `SERVO_HOLD=350`) khi trạm ở trạng thái dừng và cảm biến trống. |
+| [`station/manifest.json`](station/manifest.json) | Danh mục mã băm SHA-256 bảo vệ tính toàn vẹn của toàn bộ 9 tệp trong gói `station/`. |
+| [`pi_desktop/`](pi_desktop/) | Kịch bản `open_dashboard.sh` và biểu tượng `datn-dashboard.desktop` ngoài màn hình Raspberry Pi 4. |
+| [`tests/`](tests/) | Bộ kiểm thử tự động cho quản lý phiên chạy (`check_runs.py`), đồng bộ thông số mặc định (`check_defaults.py`) và hiển thị ảnh giao diện (`check_image.cjs`). |
 
-## Vận hành
+---
 
-Dùng `../03_Inference_Pi/run_station.py` để nạp đúng runtime và profile. Trên Pi hiện tại, dịch vụ đã quản lý trạm; mở dashboard tại `http://127.0.0.1:8768` hoặc dùng launcher trong `pi_desktop/`. Laptop dùng gateway riêng tại cổng 8769. Mở trình duyệt không gửi START motor.
+## 2. Các tính năng chính của Web Dashboard
 
-Tạo phiên trước khi chạy. Bộ đếm và số thứ tự hộp thuộc phiên đang xem; ID ESP32 gốc vẫn giữ để truy vết. Khi tạo phiên mới, ảnh kết quả cũ được xóa khỏi vùng hiển thị; dữ liệu phiên trước vẫn có trong lịch sử.
+1. **Giám sát trực quan theo thời gian thực**:
+   - Hiển thị luồng hình ảnh trực tiếp từ camera buồng chụp (MJPEG) song song với ảnh kết quả kiểm định mới nhất (đã vẽ khung bao hộp, khung tem và nhãn quyết định `PASS` / `DEFECT`).
+   - Hiển thị trạng thái kết nối của Pi, Camera, AI, ESP32, trạng thái hai cảm biến và số hộp đang nằm trong hàng đợi FIFO.
+2. **Quản lý theo từng phiên kiểm định (`Run Session`)**:
+   - Khi tạo phiên mới, bộ đếm (`Tổng`, `PASS`, `DEFECT`, `ERROR`) được đặt lại về `0` và số thứ tự hộp hiển thị bắt đầu từ `#1` trong phiên, đồng thời vẫn lưu mã `ID` gốc của ESP32 để đối chiếu nhật ký phần cứng.
+   - Cho phép xem lại lịch sử các phiên trước và tải xuống toàn bộ bản ghi thời gian (`capture_ms`, `ai_ms`, `request_to_result_ms`) dưới dạng tệp **CSV** hoặc **JSON**.
+3. **Điều khiển chế độ và tinh chỉnh thông số an toàn**:
+   - Chuyển đổi giữa chế độ **Không gạt (`DRY`)** và **Gạt lỗi (`SORT`)**, điều khiển **Chạy (`START`)** / **Dừng (`STOP`)**.
+   - Tinh chỉnh trực tiếp độ sáng đèn (`LIGHT`), PWM băng tải (`SPEED`), góc gạt servo (`SERVO_ANGLE`), thời gian giữ gạt (`SERVO_HOLD`) và độ phơi sáng camera (`Exposure`).
 
-Mặc định Pi: LED 70, PWM 180, góc gạt 60°, chờ thu 350 ms; chỉ áp dụng lúc STOPPED, cảm biến trống và trạm rảnh. Không ghi đè chỉnh tay liên tục. Camera profile ở `../03_Inference_Pi/camera_profile.json`, phơi sáng đã lưu 1100. Góc/thời gian là giá trị ra lệnh, chưa có phản hồi vị trí servo.
+Xem ảnh chụp giao diện thực tế tại [`../docs/evidence/dashboard/`](../docs/evidence/dashboard/README.md) và hướng dẫn vận hành tại [`../docs/VAN_HANH.md`](../docs/VAN_HANH.md).
 
-## Kiểm tra từ gốc kho
+---
+
+## 3. Chạy bộ kiểm thử tự động của phân hệ Dashboard
+
+Từ thư mục gốc của kho mã nguồn:
 
 ```bash
+# Kiểm tra tạo phiên mới, đánh số lại thứ tự hộp và bảo toàn lịch sử CSV/JSON
 python 05_Dashboard/tests/check_runs.py
+
+# Kiểm tra cơ chế đồng bộ thông số mặc định khi dừng và giữ nguyên chỉnh sửa của người vận hành
 python 05_Dashboard/tests/check_defaults.py
+
+# Kiểm tra logic xóa ảnh cũ khi đổi phiên, bỏ qua gói tin trễ và kiểm tra cú pháp JavaScript
 node 05_Dashboard/tests/check_image.cjs
 node --check 05_Dashboard/station/dashboard.js
 ```
-
-Các kiểm tra dùng dữ liệu tạm, không tạo phiên trên production. Không đo năng suất cơ khí hoặc chứng minh điều khiển an toàn trong mọi tình huống. [Hướng dẫn vận hành](../docs/VAN_HANH.md) và [ảnh/số liệu dashboard](../docs/evidence/dashboard/README.md) cung cấp ngữ cảnh.
-
-## Launcher desktop Pi
-
-`pi_desktop/open_dashboard.sh` đặt tại `/home/cmh/Pi4_EdgeAI`; `datn-dashboard.desktop` đặt tại `~/Desktop`, cấp quyền chạy. Đây là cấu hình cho tài khoản `cmh`; cần điều chỉnh nếu đổi máy. Launcher đợi API của dịch vụ rồi mở Chromium, không tự START băng tải.

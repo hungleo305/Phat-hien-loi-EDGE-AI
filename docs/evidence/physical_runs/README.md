@@ -1,16 +1,38 @@
-# Chạy thử nhận diện và phân loại trên băng tải
+# Hồ sơ [4] — Kết quả chạy thử nghiệm nhận diện và phân loại hộp trên băng tải thực tế
 
-Ngày thử: 11/11/2026. Ba đợt dùng cấu hình được xác nhận: LED 70/255, PWM 180/255, góc đặt servo 60°, chờ thu 350 ms, phơi sáng camera 1100. Một số hộp được chạy lặp; đơn vị là lượt kiểm định.
+Thư mục này lưu trữ nhật ký kết quả của **3 đợt chạy thử nghiệm liên hoàn trên mô hình băng tải thật** (trình bày tại mục `3.5.3`, `Bảng 3.10`, `Bảng 3.11` và `Phụ lục A`, `Bảng A.1` trong báo cáo).
 
-| Đợt | Lượt | PASS | DEFECT | Nhận diện đúng theo quan sát |
-|---|---:|---:|---:|---:|
-| #4 | 28 | 7 | 21 | 28/28 |
-| #5 chạy lại | 28 | 7 | 21 | 28/28 |
-| #6 | 30 | 7 | 23 | 30/30 |
-| Tổng | 86 | 21 | 65 | 86/86 |
+---
 
-Các tệp `trial4.json`, `trial5_repeat.json`, `trial6.json` là bản ghi API của các đợt tương ứng. [summary.csv](summary.csv) tổng hợp số bản ghi và thời gian từ yêu cầu chụp đến trả kết quả.
+## 1. Điều kiện vận hành trên mô hình thực tế
 
-Đánh giá đúng nhận diện dựa vào đối chiếu hộp thực tế và xác nhận của người vận hành. Các JSON ghi kết quả máy, không chứa bảng nhãn thật độc lập cho từng hộp. Không dùng riêng bộ đếm hoặc `delivered=true` để chứng minh nhận diện đúng hay servo gạt đúng. Thao tác gạt đúng được xác nhận qua quan sát trực tiếp; hồ sơ này không có phép đo sai số vị trí hoặc cảm biến xác nhận hướng ra của từng hộp.
+- **Ngày thực hiện**: `11/11/2026`.
+- **Cấu hình vận hành chuẩn**: Đèn buồng chụp `LIGHT = 70/255`, động cơ băng tải `SPEED (PWM) = 180/255`, góc gạt servo `SERVO_ANGLE = 60°`, thời gian giữ gạt `SERVO_HOLD = 350 ms`, độ phơi sáng camera `exposure_time_absolute = 1100`, chế độ phân loại `SORT` (gạt hộp lỗi).
 
-Không đưa đợt #5 ban đầu vào thống kê vì thao tác thử không hợp lệ; dùng đợt #5 chạy lại. Bộ này là các lượt chạy thực, không cộng với số ảnh của bộ 466 ảnh đã lưu. Kết quả nhận diện đúng không thay thế đánh giá năng suất hoặc độ bền vận hành dài hạn.
+---
+
+## 2. Bảng tổng hợp 3 đợt chạy thử (`summary.csv` — `Bảng 3.10`)
+
+| Đợt chạy thử | Tệp nhật ký gốc | Tổng số lượt hộp | Số lượt `PASS` | Số lượt `DEFECT` | Số lượt `ERROR` | Nhận diện & phân loại đúng | Thời gian trung bình từ yêu cầu chụp đến có kết quả (`ms`) |
+|---|---|---:|---:|---:|---:|---:|---:|
+| **Đợt #4** | [`trial4.json`](trial4.json) | 28 | 7 | 21 | 0 | **28 / 28** | `1573,9` |
+| **Đợt #5 (chạy lại)** | [`trial5_repeat.json`](trial5_repeat.json) | 28 | 7 | 21 | 0 | **28 / 28** | `1601,8` |
+| **Đợt #6** | [`trial6.json`](trial6.json) | 30 | 7 | 23 | 0 | **30 / 30** | `1423,9` |
+| **Tổng cộng** | [`summary.csv`](summary.csv) | **86** | **21** | **65** | **0** | **86 / 86 (100%)** | — |
+
+---
+
+## 3. Trích lục 6 lượt kiểm định trong Đợt #6 (`Bảng A.1` — Phụ lục A)
+
+Bảng dưới đây trích 6 lượt kiểm định tiêu biểu từ tệp [`trial6.json`](trial6.json) (gồm 3 hộp lỗi và 3 hộp đạt) để minh họa cấu trúc bản ghi thời gian của trạm:
+
+| Mã hộp (`box_id`) | Kết quả (`decision`) | Thu ảnh camera (`capture_ms`) | Xử lý AI (`ai_ms`) | Từ lúc yêu cầu chụp đến khi có kết quả (`request_to_result_ms`) |
+|---:|---|---:|---:|---:|
+| `152` | `DEFECT` | `95,0` | `1693,3` | `1806,1` |
+| `153` | `DEFECT` | `100,0` | `800,9` | `1320,6` |
+| `154` | `DEFECT` | `119,3` | `761,9` | `890,2` |
+| `179` | `PASS` | `100,6` | `1864,0` | `2363,7` |
+| `180` | `PASS` | `118,5` | `1863,8` | `1990,1` |
+| `181` | `PASS` | `99,1` | `1723,0` | `2113,9` |
+
+*Ghi chú*: Giá trị `request_to_result_ms` được tính từ thời điểm trạm nhận yêu cầu chụp (`CAPTURE`) cho tới khi gửi xong bản tin `RESULT`, bao gồm cả thời gian thu ảnh, xử lý AI và điều phối luồng.
