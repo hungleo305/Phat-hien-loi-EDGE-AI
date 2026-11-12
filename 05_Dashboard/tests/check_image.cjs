@@ -1,7 +1,7 @@
 const fs = require('fs');
 const vm = require('vm');
 const assert = require('assert/strict');
-const source = fs.readFileSync(__dirname + '/../dashboard.js', 'utf8');
+const source = fs.readFileSync(__dirname + '/../station/dashboard.js', 'utf8');
 const functions = source.slice(source.indexOf('function clearCaptureImage()'), source.indexOf('function renderCounts'));
 const nodes = {
   captureImage: {hidden: false, src: 'old', removeAttribute(name) { delete this[name]; }},

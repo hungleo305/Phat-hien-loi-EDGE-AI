@@ -7,3 +7,5 @@ docs/evidence/** -text whitespace=cr-at-eol
 05_Dashboard/pi_desktop/*.sh text eol=lf
 05_Dashboard/pi_desktop/*.desktop text eol=lf
 
+
+02_Optimization/*.sh text eol=lf

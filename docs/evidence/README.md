@@ -4,12 +4,12 @@ Thư mục này công bố nguồn số liệu tự thực hiện được dẫn
 
 | Tài liệu tham khảo trong báo cáo | Nội dung | Hồ sơ |
 |---|---|---|
-| [7] | Chạy lại 466 ảnh trên Pi | [pi466](pi466/) |
-| [8] | So sánh FP32/FP16 và kích thước đầu vào bề mặt | [fp16](fp16/), [surface_sizes](surface_sizes/) |
-| [9] | So sánh Pi với Acer trên cùng 11 ảnh | [pi_acer](pi_acer/) |
-| [10] | Giao diện dashboard đang sử dụng | [dashboard](dashboard/) |
-| [11] | Ba đợt chạy thử có 86 lượt kiểm định | [physical_runs](physical_runs/) |
-| [20] | Thành phần dữ liệu và kết quả huấn luyện | [training_data](training_data/) |
+| [3] | Chạy lại 466 ảnh trên Pi | [pi466](pi466/) |
+| [5] | So sánh FP32/FP16 và kích thước đầu vào bề mặt | [fp16](fp16/), [surface_sizes](surface_sizes/) |
+| [6] | So sánh Pi với Acer trên cùng 11 ảnh | [pi_acer](pi_acer/) |
+| [2] | Giao diện dashboard đang sử dụng | [dashboard](dashboard/) |
+| [4] | Ba đợt chạy thử có 86 lượt kiểm định | [physical_runs](physical_runs/) |
+| [1] | Thành phần dữ liệu và kết quả huấn luyện | [training_data](training_data/) |
 
 Các CSV/JSON số liệu được sao chép nguyên nội dung từ hồ sơ thực nghiệm. README giải thích phương pháp, đơn vị và phạm vi sử dụng. `SHA256SUMS` cho phép kiểm tra tính toàn vẹn các tệp công bố.
 
@@ -18,7 +18,7 @@ Các CSV/JSON số liệu được sao chép nguyên nội dung từ hồ sơ th
 - **295 ảnh V4**: bộ phát triển mô hình, gồm 205 ảnh huấn luyện, 40 ảnh xác thực và 50 ảnh kiểm thử.
 - **559 ảnh**: dữ liệu huấn luyện mô hình bề mặt, gồm 354 ảnh bổ sung từ bộ dữ liệu giai đoạn trước và 205 ảnh huấn luyện V4.
 - **466 ảnh**: ảnh đã lưu để chạy lại toàn chương trình; kết quả không phải phép đánh giá độc lập trên 466 hộp mới.
-- **11 ảnh**: bộ so sánh thời gian Pi–Acer, mỗi ảnh xử lý ba lần trên mỗi máy.
+- **11 tệp ảnh**: bộ so sánh thời gian Pi–Acer, mỗi tệp xử lý ba lần trên mỗi máy; ba tệp PASS có cùng nội dung ảnh.
 - **86 lượt**: kết quả chạy thử trên băng tải; có hộp được chạy lặp.
 
 Các số trên có mục đích khác nhau và một phần cùng nguồn ảnh, không cộng thành tổng số mẫu độc lập. Hồ sơ này **không kèm toàn bộ ảnh nguồn của bộ huấn luyện và bộ 466 ảnh**. Các bảng, nhật ký kết quả và kiểm kê dữ liệu cho phép kiểm tra cách tính; để chạy lại toàn bộ thực nghiệm còn cần ảnh nguồn và đúng môi trường thực thi. Mô hình và chương trình được lưu ở các mô-đun khác trong kho mã.

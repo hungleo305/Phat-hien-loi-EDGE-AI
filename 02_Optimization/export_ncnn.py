@@ -8,7 +8,7 @@ from pathlib import Path
 import shutil
 
 PROJECT = Path(__file__).resolve().parents[2]
-SOURCE = PROJECT / 'Cong_cu_phat_trien/work/pi_production_20261101/runtime/models'
+SOURCE = Path(__file__).resolve().parents[1] / '03_Inference_Pi/runtime/models'
 FP16_MARKER = bytes.fromhex('476b3001')  # NCNN little-endian 0x01306B47
 MODELS = (('whole_balanced', 640), ('surface_finetuned', 960))
 

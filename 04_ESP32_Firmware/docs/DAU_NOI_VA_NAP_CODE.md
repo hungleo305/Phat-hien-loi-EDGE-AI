@@ -112,7 +112,7 @@ Không để Pi và adapter khác cùng phát vào RX2.
 Để nạp khi có phần cứng, đóng monitor đang giữ COM, thay COM5 bằng cổng board:
 
 ```powershell
-cd F:\DATN\Tai_nguyen\ESP32_Firmware
+cd F:\DATN\DATN_Source\04_ESP32_Firmware
 # Build trước để thiết lập môi trường trong PowerShell này.
 .\build.ps1
 & 'C:\Espressif\python_env\idf5.3_py3.12_env\Scripts\python.exe' `

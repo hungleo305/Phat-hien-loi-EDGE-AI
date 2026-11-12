@@ -1,0 +1,15 @@
+CompileFlags:
+  CompilationDatabase: F:/DATN/Cong_cu_phat_trien/outputs/esp32_build
+  Add:
+    - -Wno-unknown-argument
+    - -isystem
+    - C:/Espressif/tools/xtensa-esp-elf/esp-13.2.0_20250707/xtensa-esp-elf/xtensa-esp-elf/include
+    - -isystem
+    - C:/Espressif/tools/xtensa-esp-elf/esp-13.2.0_20250707/xtensa-esp-elf/lib/gcc/xtensa-esp-elf/13.2.0/include
+    - -isystem
+    - C:/Espressif/tools/xtensa-esp-elf/esp-13.2.0_20250707/xtensa-esp-elf/lib/gcc/xtensa-esp-elf/13.2.0/include-fixed
+    - -DESP_PLATFORM
+    - -D_GNU_SOURCE
+  Remove:
+    - -fno-tree-switch-conversion
+    - -fstrict-volatile-bitfields

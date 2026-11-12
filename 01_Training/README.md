@@ -1,34 +1,30 @@
-# THƯ MỤC 01: HUẤN LUYỆN MÔ HÌNH AI (TRAINING)
+# Huấn luyện và đánh giá mô hình
 
-> **Ánh xạ thuyết minh đồ án:** Mục 3.2.3.1 (Chuẩn bị và phân chia dữ liệu) và Mục 3.2.3.2 (Cấu hình huấn luyện và hội tụ hàm mất mát).
+Hai mô hình YOLOv8n có vai trò khác nhau: toàn hộp 640 nhận PASS/DEFECT; bề mặt 960 tìm vùng `visible_defect`. Bộ kiểm định tem dùng ảnh mẫu và OpenCV, không huấn luyện bằng hai script này.
 
----
-
-## 1. Danh sách các tệp trong thư mục
-
-| Tên tệp | Vai trò |
+| Tệp | Công việc |
 |---|---|
-| **`train.py`** | Script Python huấn luyện mô hình **Tầng 1 (Toàn hộp - whole_balanced)** bằng thư viện Ultralytics YOLOv8n (ảnh $640 \times 640$, batch 4, epochs 25, tối ưu hóa AdamW). |
-| **`train_surface.py`** | Script huấn luyện **Tầng 2 (Ngoại quan cục bộ - surface_finetune)** chuyên sâu cho vết rách, xước nhỏ (ảnh $960 \times 960$, batch 2). |
-| **`data.yaml`** | Tệp cấu hình đường dẫn tới tập dữ liệu Train/Val/Test và định nghĩa danh sách các lớp: `['DEFECT', 'PASS', 'visible_defect']`. |
-| **`best.pt`** | **Bộ não AI ban đầu** (Trọng số PyTorch Tầng 1 sau khi huấn luyện, dung lượng ~6.2 MB cho kiến trúc YOLOv8n). |
-| **`best_surface.pt`** | Trọng số PyTorch Tầng 2 chuyên bắt lỗi ngoại quan (dung lượng ~6.3 MB). |
-| **`evaluate.py`** | Script đánh giá độc lập mô hình trên tập kiểm thử (Test set) và tập khóa kiểm định mù BOX06 / PASS. |
-| **`results.png`** | Biểu đồ biến thiên hàm mất mát ($\mathcal{L}_{CIoU}, \mathcal{L}_{DFL}, \mathcal{L}_{BCE}$) và chỉ số $mAP_{50}$ qua các epoch (minh chứng cho Báo cáo). |
-| **`confusion_matrix_normalized.png`** | Ma trận nhầm lẫn chuẩn hóa chứng minh khả năng phân loại chính xác giữa PASS và DEFECT. |
+| `train.py` | Huấn luyện toàn hộp hoặc chọn `--model surface` |
+| `train_surface.py` | Điểm chạy gọn cho mô hình bề mặt, dùng chung code `train.py` |
+| `evaluate.py` | Đo Precision, Recall, mAP của riêng detector |
+| `data.yaml` | Cấu hình bộ toàn hộp trên laptop hiện tại |
+| `results.png`, `confusion_matrix_normalized.png` | Hình minh họa giai đoạn huấn luyện; số liệu và nguồn tại docs/evidence/training_data |
 
----
+Checkpoint cuối được lưu duy nhất tại `../03_Inference_Pi/runtime/models/whole_balanced.pt` và `surface_finetuned.pt`.
 
-## 2. Lệnh chạy huấn luyện lại mô hình
+## Dữ liệu và môi trường
 
-```bash
-# Huấn luyện mô hình Tầng 1 (Toàn hộp)
-python train.py
+Laptop hiện tại giữ bộ dữ liệu tại `F:/DATN/Du_lieu_goc/Huan_luyen/`: `dataset_detection_balanced` cho toàn hộp, `dataset_surface_combined` cho bề mặt, `initial_weights` cho hai checkpoint khởi tạo. Ảnh và nhãn không nằm trong Git. Với máy khác, truyền `--data` và `--weights` trỏ tới dữ liệu/checkpoint đã chuẩn bị.
 
-# Huấn luyện mô hình Tầng 2 (Ngoại quan bề mặt)
-python train_surface.py
+Chạy từ gốc kho bằng môi trường PyTorch/Ultralytics. Dùng `--device 0` cho CUDA hoặc `--device cpu`; không có bước tự tải checkpoint thay thế.
 
-# Đánh giá kiểm thử
-python evaluate.py
+```powershell
+python 01_Training/train.py --output F:/DATN/Cong_cu_phat_trien/outputs/train_whole_moi
+python 01_Training/train_surface.py --output F:/DATN/Cong_cu_phat_trien/outputs/train_surface_moi
+python 01_Training/evaluate.py --model whole --output F:/DATN/Cong_cu_phat_trien/outputs/eval_whole_moi
+python 01_Training/evaluate.py --model surface --output F:/DATN/Cong_cu_phat_trien/outputs/eval_surface_moi
 ```
 
+Đường dẫn đầu ra phải chưa tồn tại; các lệnh tạo kết quả mới và không thay model production. Mặc định đánh giá toàn hộp trên `test`, bề mặt trên `val`, đúng loại tập đo trong báo cáo. Có thể truyền `--split` khi có mục đích đánh giá khác.
+
+Toàn hộp dùng 205 ảnh nguồn, lặp 50 ảnh PASS thành 150 lượt PASS để cân bằng với 155 lượt DEFECT. Bề mặt dùng 559 ảnh; bộ bổ sung cũ đã được đưa vào huấn luyện nên không còn là kiểm thử độc lập. [Thông số và chỉ số gốc](../docs/evidence/training_data/README.md) ghi rõ nguồn, tập đo và giới hạn. Chạy lại cùng seed chưa bảo đảm kết quả số học giống tuyệt đối giữa mọi phiên bản thư viện/phần cứng.

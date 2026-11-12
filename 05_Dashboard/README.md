@@ -1,30 +1,35 @@
-# Dashboard
-Máy chủ HTTP và giao diện của trạm Pi. server.py cung cấp lớp Dashboard, không phải lệnh khởi động độc lập. Trạm production khởi động qua service trên Pi.
-Giao diện cập nhật trạng thái mỗi 1500 ms. DRY là chạy thử không gạt; SORT cho phép gạt DEFECT. Độ trễ hiển thị là CAPTURE-to-RESULT, không bao gồm thời gian trình duyệt hiển thị.
+# Trạm điều phối và dashboard
 
-## Cập nhật vận hành 11/11/2026
+Mã chạy duy nhất nằm trong `station/`. Trạm nhận CAPTURE từ ESP32, lấy ảnh, gọi runtime AI, gửi RESULT và cung cấp web dashboard. Không còn các bản HTML/JS/server sao chép tại gốc module.
 
-- Tạo phiên mới đặt số hộp và PASS/DEFECT/ERROR về 0. Kết quả đầu tiên trong phiên hiển thị #1; chọn phiên cũ để xem thống kê riêng. CSV có `stt_trong_phien`, giữ mã ESP32 gốc để truy vết.
-- Khi tạo phiên, ảnh cũ được xóa ngay. Phản hồi tải ảnh của phiên trước đến trễ không được hiển thị lại. CSS tôn trọng thuộc tính `hidden` và giữ thông báo trống ở giữa khung.
-- Nhãn cài đặt dùng chữ thường; hộp cài đặt bỏ bóng đổ lớn.
-- `station/station_defaults.json`: PWM 180, LED 70, góc gạt 60°, chờ thu tay 350 ms. `startup_defaults.py` áp dụng một lần khi trạm khởi động hoặc ESP32 đổi session, chỉ khi STOPPED, cảm biến trống và trạm rảnh; chờ ACK và kiểm tra STATE. Không tự START motor, không ghi đè chỉnh tay sau khi khởi tạo xong.
-- Phơi sáng camera đã lưu 1100 trong `../03_Inference_Pi/camera_profile.json`. Các thông số ESP32 trên được Pi áp dụng; không phải thay mặc định trong firmware khi ESP32 chạy riêng.
+| Tệp trong station | Vai trò |
+|---|---|
+| `run_station.py` | Điều phối camera, tiến trình AI, UART và dashboard |
+| `station_protocol.py` | Đọc bản tin và giao dịch theo phiên/ID |
+| `dashboard.py` | HTTP API, MJPEG, lịch sử và xuất CSV/JSON |
+| `dashboard.html`, `dashboard.css`, `dashboard.js` | Giao diện trình duyệt |
+| `startup_defaults.py`, `station_defaults.json` | Áp dụng mặc định khi dừng/trống, chờ ACK và STATE |
+| `manifest.json` | Kiểm tra các tệp đồng bộ trong gói station |
 
-`station/` là bản điều phối đồng bộ từ Pi; manifest kiểm tra nguyên vẹn các file. `server.py` là bản sao thư viện `station/dashboard.py`. Các cặp `index.html`/`dashboard.html` và `app.js`/`dashboard.js` ở gốc được đồng bộ cho các điểm mở giao diện khác nhau.
+## Vận hành
 
-## Shortcut trên desktop Pi
+Dùng `../03_Inference_Pi/run_station.py` để nạp đúng runtime và profile. Trên Pi hiện tại, dịch vụ đã quản lý trạm; mở dashboard tại `http://127.0.0.1:8768` hoặc dùng launcher trong `pi_desktop/`. Laptop dùng gateway riêng tại cổng 8769. Mở trình duyệt không gửi START motor.
 
-`pi_desktop/` chứa script và launcher đang dùng. Với bản production ở `/home/cmh/Pi4_EdgeAI`, chép `open_dashboard.sh` vào thư mục đó và `datn-dashboard.desktop` vào `~/Desktop/`, cấp quyền chạy cho cả hai. Launcher dùng dịch vụ user `datn-station.service`, đợi API rồi mở Chromium tại `http://127.0.0.1:8768`; không khởi động băng tải. Các đường dẫn này dành cho máy Pi hiện tại, cần điều chỉnh nếu cài sang tài khoản khác.
+Tạo phiên trước khi chạy. Bộ đếm và số thứ tự hộp thuộc phiên đang xem; ID ESP32 gốc vẫn giữ để truy vết. Khi tạo phiên mới, ảnh kết quả cũ được xóa khỏi vùng hiển thị; dữ liệu phiên trước vẫn có trong lịch sử.
 
-## Kiểm tra
+Mặc định Pi: LED 70, PWM 180, góc gạt 60°, chờ thu 350 ms; chỉ áp dụng lúc STOPPED, cảm biến trống và trạm rảnh. Không ghi đè chỉnh tay liên tục. Camera profile ở `../03_Inference_Pi/camera_profile.json`, phơi sáng đã lưu 1100. Góc/thời gian là giá trị ra lệnh, chưa có phản hồi vị trí servo.
 
-Chạy từ gốc kho:
+## Kiểm tra từ gốc kho
 
 ```bash
 python 05_Dashboard/tests/check_runs.py
 python 05_Dashboard/tests/check_defaults.py
 node 05_Dashboard/tests/check_image.cjs
-node --check 05_Dashboard/dashboard.js
+node --check 05_Dashboard/station/dashboard.js
 ```
 
-Các kiểm tra dùng dữ liệu tạm riêng; không tạo phiên trong dữ liệu production. Kiểm thử khôi phục thực tế trên Pi đã xác nhận PWM 179 về 180 sau restart dịch vụ và camera nạp lại 1100; chưa thử power-cycle toàn hệ thống. Thuật toán AI, model và ngưỡng phân loại không đổi trong cập nhật này.
+Các kiểm tra dùng dữ liệu tạm, không tạo phiên trên production. Không đo năng suất cơ khí hoặc chứng minh điều khiển an toàn trong mọi tình huống. [Hướng dẫn vận hành](../docs/VAN_HANH.md) và [ảnh/số liệu dashboard](../docs/evidence/dashboard/README.md) cung cấp ngữ cảnh.
+
+## Launcher desktop Pi
+
+`pi_desktop/open_dashboard.sh` đặt tại `/home/cmh/Pi4_EdgeAI`; `datn-dashboard.desktop` đặt tại `~/Desktop`, cấp quyền chạy. Đây là cấu hình cho tài khoản `cmh`; cần điều chỉnh nếu đổi máy. Launcher đợi API của dịch vụ rồi mở Chromium, không tự START băng tải.

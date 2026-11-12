@@ -3,10 +3,16 @@ import json
 import os
 import tempfile
 import sys
+from itertools import count
+from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'station'))
 from dashboard import Dashboard
 
-with tempfile.TemporaryDirectory(dir=Path(__file__).parent) as directory:
+# Separate fixture events by whole seconds so filesystem timestamp rounding
+# cannot move a record across a run boundary on Windows.
+clock = count(1700000000)
+with tempfile.TemporaryDirectory(dir=Path(__file__).parent) as directory, \
+        patch('dashboard.time.time', side_effect=lambda: next(clock)):
     captures = Path(directory)
     folder = captures/'20261111_170000'
     folder.mkdir()
@@ -21,6 +27,7 @@ with tempfile.TemporaryDirectory(dir=Path(__file__).parent) as directory:
         path.write_text(json.dumps(packet))
         stamp = d.recent[0]['at']
         os.utime(path, (stamp, stamp))
+        os.utime(folder, (stamp, stamp))
     try:
         ready()
         first, error = d.create_run('first')

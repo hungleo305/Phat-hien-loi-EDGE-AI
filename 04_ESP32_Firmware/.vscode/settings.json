@@ -1,0 +1,16 @@
+{
+  "C_Cpp.default.compilerPath": "C:/Espressif/tools/xtensa-esp-elf/esp-13.2.0_20250707/xtensa-esp-elf/bin/xtensa-esp32-elf-gcc.exe",
+  "C_Cpp.default.intelliSenseMode": "gcc-arm",
+  "C_Cpp.default.cStandard": "gnu17",
+  "C_Cpp.default.cppStandard": "gnu++17",
+  "idf.currentSetup": "C:\\Espressif\\frameworks\\esp-idf-v5.3.5",
+  "idf.espIdfPathWin": "C:\\Espressif\\frameworks\\esp-idf-v5.3.5",
+  "idf.pythonBinPathWin": "C:\\Espressif\\python_env\\idf5.3_py3.12_env\\Scripts\\python.exe",
+  "idf.toolsPathWin": "C:\\Espressif",
+  "idf.buildPathWin": "F:\\DATN\\Cong_cu_phat_trien\\outputs\\esp32_build",
+  "clangd.arguments": [
+    "--query-driver=C:/Espressif/tools/**",
+    "--background-index"
+  ],
+  "C_Cpp.default.compileCommands": "F:/DATN/Cong_cu_phat_trien/outputs/esp32_build/compile_commands.json"
+}
