@@ -1,6 +1,7 @@
 # Preserve verified release bytes across Windows/Linux checkouts.
 03_Inference_Pi/runtime/** -text whitespace=cr-at-eol
 05_Dashboard/station/** -text whitespace=cr-at-eol
+docs/evidence/** -text whitespace=cr-at-eol
 
 # Linux launchers must retain LF when checked out on Windows.
 05_Dashboard/pi_desktop/*.sh text eol=lf
